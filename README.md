@@ -1,13 +1,11 @@
-CBIC Tech Tour 2015
+CBIC Tech Tour 
+
+[http://techtour.alleywayconsulting.com/](http://techtour.alleywayconsulting.com/)
 
 Installing JavaScript Libraries (only use when updating libraries)
 
 - "npm install bower"
 - "bower install" (should just use the bower.json file)
-- "bower install mapbox.js"
-- "bower install bootstrap"
-- "bower install leaflet.markercluster"
-- "bower install Leaflet/Leaflet.fullscreen"
 
 
 Deployment Workflow
