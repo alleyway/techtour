@@ -28,6 +28,29 @@
         <script src="bower_components/respond/dest/respond.min.js"></script>
     <![endif]-->
 
+
+    <script id="business_template" type="text/x-handlebars-template">
+        <!-- TODO: outline in red if no GPS coordinates -->
+        <div class="business_entry">
+            <h1>{{businessName}}</h1>
+            <div class="body">
+                {{venueName}}<br/>
+                {{venueAddress}}
+            </div>
+        </div>
+    </script>
+
+    <script id="tour_template" type="text/x-handlebars-template">
+        <!-- TODO: outline in red if no GPS coordinates -->
+        <div class="business_entry">
+            <h1>{{businessName}}</h1>
+            <div class="body">
+                {{venueName}}<br/>
+                {{venueAddress}}
+            </div>
+        </div>
+    </script>
+
 </head>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -77,7 +100,7 @@
 
         <div id="business_container"></div>
 
-        <div id="tour_group_container"></div>
+        <div id="tour_container"></div>
 
     </section>
 
@@ -123,9 +146,11 @@
     <!-- Scrolling Nav JavaScript -->
     <script src="bower_components/jquery.easing/js/jquery.easing.min.js"></script>
 
-    <!-- mapbox -->
+    <!-- other -->
 
     <script src="bower_components/mapbox.js/mapbox.js"></script>
+    <script src="bower_components/handlebars/handlebars.min.js"></script>
+    <script src="bower_components/jquery-sheetrock/dist/sheetrock.min.js"></script>
 
     <!-- Custom javascript -->
     <script src="main.js"></script>

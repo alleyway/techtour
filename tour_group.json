@@ -1,0 +1,26 @@
+{
+  "tour group 99": {
+    "bus": "bus 192",
+    "stops": [
+      {
+        "tour_time": "1:00pm",
+        "tour_guide": "Jimmy Johnson",
+        "business_name": "ACME Company",
+        "venue_name": "PVCC",
+        "venue_address": "123 dice st",
+        "venue_lat": "-78.029",
+        "venue_lng": "38.049"
+      },
+      {
+        "tour_time": "3:00pm",
+        "tour_guide": "Jimmy Johnson",
+        "business_name": "ACME Company",
+        "venue_name": "PVCC",
+        "venue_address": "123 dice st",
+        "venue_lat": "-78.029",
+        "venue_lng": "38.049"
+      },
+
+    ]
+  }
+}

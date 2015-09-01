@@ -50,9 +50,12 @@ html {
     }
 }
 
-/* Demo Sections - You can use these as guides or delete them - the scroller will work with any sort of height, fixed, undefined, or percentage based.
-The padding is very important to make sure the scrollspy picks up the right area when scrolled to. Adjust the margin and padding of sections and children 
-of those sections to manage the look and feel of the site. */
+.business_entry {
+    width: 100%;
+    margin: 20px auto;
+    background-color: #1b6d85;
+    border: 1px solid #122b40;
+}
 
 .intro-section {
     /*height: 100%;*/
