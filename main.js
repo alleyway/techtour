@@ -9,6 +9,18 @@ var tourSpreadsheet =
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+var clusterGroupMarkers = new L.MarkerClusterGroup({
+    showCoverageOnHover: false,
+    animateAddingMarkers: false,
+    maxClusterRadius: 35,
+    disableClusteringAtZoom: 15
+});
+
+var plainGroupMarkers = new L.FeatureGroup();
+
+var map;
+
 var businessStore = {};
 
 var tourStore = {};
@@ -54,16 +66,27 @@ function updateDisplay(){
 
     if (true){
 
+        var oms = new OverlappingMarkerSpiderfier(map);
+
         $.map(businessStore, function(businessObject){
             // iterate through objects and add to display
             businessContainer.append(businessTemplate(businessObject));
 
             // add marker
+            //TODO: set marker icon & color
 
+            var coords = $(businessObject.venueCoordinates);
+            if (coords.length == 2 && ($.isNumeric(coords[0]) && $.isNumeric(coords[1]))){
+                var marker = L.marker(new L.LatLng(coords[0], coords[1]), {
+                    title: businessObject.businessName,
+                    riseOnHover: true
+                });
+                plainGroupMarkers.addLayer(marker);
+                clusterGroupMarkers.addLayer(marker);
+                oms.addMarker(marker);
+            }
         });
 
-        //iterate through businesses
-        //create marker icon, set color
 
     } else {
         //iterate through tours
@@ -74,6 +97,14 @@ function updateDisplay(){
 
 }
 
+function setActiveLayers() {
+    if (map.getZoom() < 9 && map.hasLayer(clusterGroupMarkers)) {
+        map.removeLayer(clusterGroupMarkers);
+    }
+    if (map.getZoom() >= 9 && map.hasLayer(clusterGroupMarkers) == false) {
+        map.addLayer(clusterGroupMarkers);
+    }
+}
 
 $(document).ready(function () {
 
@@ -83,7 +114,7 @@ $(document).ready(function () {
     if ($(window).width() < 550) zoomLevel = 12;
 
     L.mapbox.accessToken = 'pk.eyJ1IjoibWxha2U5MDAiLCJhIjoiSXV0UEF6dyJ9.8ZrYcafYb59U67LHErUegw';
-    var map = L.mapbox.map('map', 'mlake900.lae6oebe', {
+    map = L.mapbox.map('map', 'mlake900.lae6oebe', {
         zoomControl: true
 
     }).setView([38.032, -78.492], zoomLevel);
@@ -95,6 +126,11 @@ $(document).ready(function () {
     map.scrollWheelZoom.disable();
     map.zoomControl.setPosition('topright');
 
+    map.on('zoomend', function () {
+        setActiveLayers();
+    });
+
+    setActiveLayers();
     //TODO: L.control.fullscreen({position: "topright"}).addTo(map);
 
 
@@ -110,24 +146,16 @@ $(document).ready(function () {
             response.rows.forEach(function(row){
                 //save as structured data
 
-                var tourCoordArray = row.cells["TourGPS"].split(",");
-
-                if ($.isNumeric(tourCoordArray[0]) && $.isNumeric(tourCoordArray[1])) {
-                    row.cells["TourLat"] = tourCoordArray[0];
-                    row.cells["TourLng"] = tourCoordArray[1];
-                }
-
                 businessStore[row.cells["Name"]] = {
                     "businessName" : row.cells["Name"],
                     "venueName": row.cells["TourVenue"],
                     "venueAddress": row.cells["TourAddress"],
-                    "venueLat": row.cells["TourLat"],
-                    "venueLng": row.cells["TourLng"]
+                    "venueCoordinates": row.cells["TourGPS"].split(",")
                 };
             });
 
             //finished processing spreadsheet rows
-            updateDisplay();
+            setTimeout(updateDisplay, 100);
 
             //TODO: call sheetrock to grab tours
         }
@@ -138,7 +166,8 @@ $(document).ready(function () {
         headersOff: true,
         rowGroups: false,
         sql: "select * where D contains 'YES' order by A",
-        callback: businessSpreadsheetCallback
+        callback: businessSpreadsheetCallback,
+        reset: true
     });
 
 });
