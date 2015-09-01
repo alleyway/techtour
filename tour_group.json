@@ -1,26 +1,21 @@
 {
   "tour group 99": {
+    "tourGroupName": "1",
     "bus": "bus 192",
     "stops": [
       {
-        "tour_time": "1:00pm",
-        "tour_guide": "Jimmy Johnson",
-        "business_name": "ACME Company",
-        "venue_name": "PVCC",
-        "venue_address": "123 dice st",
-        "venue_lat": "-78.029",
-        "venue_lng": "38.049"
-      },
-      {
-        "tour_time": "3:00pm",
-        "tour_guide": "Jimmy Johnson",
-        "business_name": "ACME Company",
-        "venue_name": "PVCC",
-        "venue_address": "123 dice st",
-        "venue_lat": "-78.029",
-        "venue_lng": "38.049"
-      },
-
+        "business": {
+          "businessName": "MicroAire",
+          "venueAddress": "123 Dice st",
+          "venueCoordinates": [
+            -78.323,
+            38.3443
+          ]
+        },
+        "tourGuide": "Jimmy Johnson",
+        "tourTime": "1:00 pm",
+      }
     ]
   }
 }
+

@@ -47,11 +47,10 @@
     <script id="tour_template" type="text/x-handlebars-template">
         <!-- TODO: outline in red if no GPS coordinates -->
         <div class="tour_entry">
-            <h2>{{businessName}}</h2>
+            <h2>{{tourGroupName}}</h2>
 
             <div class="body">
-                {{venueName}}<br/>
-                {{venueAddress}}
+                {{#each stops}}{{business.businessName}} {{tourGuide}} {{tourTime}}<br/>{{/each}}
             </div>
         </div>
     </script>
@@ -110,13 +109,11 @@
         <li>Tours</li>
     </ul>
 
-        <input class="search_field" type="text" placeholder="Search business..."/>
+        <input id="search" class="search_field" type="text" placeholder="Search businesses..."/>
 
     </div>
 
-    <div id="business_container"></div>
-
-    <div id="tour_container"></div>
+    <div id="entry_container"></div>
 
 </section>
 
@@ -157,7 +154,7 @@
 
 <script src="bower_components/mapbox.js/mapbox.js"></script>
 <script src="bower_components/handlebars/handlebars.min.js"></script>
-<script src="bower_components/jquery-sheetrock/dist/sheetrock.min.js"></script>
+<script src="bower_components/sheetrock/dist/sheetrock.min.js"></script>
 <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src="bower_components/overlapping_marker_spiderfier-leaflet/dist/oms.min.js"></script>
 

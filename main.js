@@ -1,11 +1,10 @@
-
 //// CONFIGURE
 //// copy in the business spreadsheet url (be sure you're on the right tab and that the sheet is publicly "viewable")
 var businessSpreadsheet =
     'https://docs.google.com/spreadsheets/d/1P8042q3PfithAudtrIY5Ce6VbMc_zViIRB7tFQ_rUBg/#gid=1872708460';
 
 var tourSpreadsheet =
-    'https://docs.google.com/spreadsheets/d/1P8042q3PfithAudtrIY5Ce6VbMc_zViIRB7tFQ_rUBg/edit#gid=1872708460';
+    'https://docs.google.com/spreadsheets/d/1P8042q3PfithAudtrIY5Ce6VbMc_zViIRB7tFQ_rUBg/edit#gid=1737014077';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -21,6 +20,8 @@ var plainGroupMarkers = new L.FeatureGroup();
 
 var map;
 
+var oms;
+
 var businessStore = {};
 
 var tourStore = {};
@@ -29,9 +30,10 @@ var businessTemplate;
 
 var tourTemplate;
 
+var businessTabSelected = true;
 
 //jQuery to collapse the navbar on scroll
-$(window).scroll(function() {
+$(window).scroll(function () {
     //if ($(".navbar").offset().top > 50) {
     //    $(".navbar-fixed-top").addClass("top-nav-collapse");
     //} else {
@@ -40,8 +42,8 @@ $(window).scroll(function() {
 });
 
 //jQuery for page scrolling feature - requires jQuery Easing plugin
-$(function() {
-    $('a.page-scroll').bind('click', function(event) {
+$(function () {
+    $('a.page-scroll').bind('click', function (event) {
         var $anchor = $(this);
         $('html, body').stop().animate({
             scrollTop: $($anchor.attr('href')).offset().top
@@ -50,33 +52,65 @@ $(function() {
     });
 });
 
-function updateDisplay(){
 
-    var businessContainer = $('#business_container');
-    var tourContainer = $('#tour_container');
+$(function () {
+    $('.selection_container li').bind('click', function (event) {
+        if ($(event.target).hasClass("active_tab")) return;
+        event.preventDefault();
+        $('.selection_container li').toggleClass("active_tab");
+        var searchField = $('#search');
+        searchField.val("");
+        businessTabSelected = !businessTabSelected;
+        if (businessTabSelected) {
+            searchField.attr("placeholder", "Search businesses..")
+        } else {
+            searchField.attr("placeholder", "Search tours..")
+        }
+
+        updateDisplay();
+
+    });
+});
+
+$(function () {
+    $('#search').keyup(function (event) {
+        updateDisplay();
+    });
+});
+
+function updateDisplay() {
+
+    var entryContainer = $('#entry_container');
 
     //reset display
 
-    //TODO: markers.clearLayers();
+    clusterGroupMarkers.clearLayers();
+    plainGroupMarkers.clearLayers();
+    oms.clearMarkers()
 
-    businessContainer.empty();
-    tourContainer.empty();
+    entryContainer.empty();
 
     //based on what's selected, or what's being searched
 
-    if (true){
+    var searchValue = $('#search').val().toLowerCase();
 
-        var oms = new OverlappingMarkerSpiderfier(map);
+    if (businessTabSelected) {
 
-        $.map(businessStore, function(businessObject){
+        $.map(businessStore, function (businessObject) {
+
+            if (searchValue.length > 0) {
+                var found = false;
+                if (businessObject.businessName.toLowerCase().indexOf(searchValue) > -1) {
+                    found = true;
+                }
+                if (!found) return;
+            }
+
             // iterate through objects and add to display
-            businessContainer.append(businessTemplate(businessObject));
-
-            // add marker
-            //TODO: set marker icon & color
+            entryContainer.append(businessTemplate(businessObject));
 
             var coords = $(businessObject.venueCoordinates);
-            if (coords.length == 2 && ($.isNumeric(coords[0]) && $.isNumeric(coords[1]))){
+            if (coords.length == 2 && ($.isNumeric(coords[0]) && $.isNumeric(coords[1]))) {
                 var marker = L.marker(new L.LatLng(coords[0], coords[1]), {
                     title: businessObject.businessName,
                     riseOnHover: true
@@ -89,10 +123,34 @@ function updateDisplay(){
 
 
     } else {
-        //iterate through tours
-        // create marker icon, set color
-        //add marker
-        //add handlebar template
+
+        var count = -1;
+        $.map(tourStore, function (tourObject) {
+            count++;
+            //TODO: color icon based on which number we're in
+
+            // iterate through objects and add to display
+            entryContainer.append(tourTemplate(tourObject));
+
+            tourObject.stops.forEach(function (tourStop) {
+
+                if (tourStop.business == undefined) return;
+
+                var coords = $(tourStop.business.venueCoordinates);
+                if (coords.length == 2 && ($.isNumeric(coords[0]) && $.isNumeric(coords[1]))) {
+                    var marker = L.marker(new L.LatLng(coords[0], coords[1]), {
+                        title: tourStop.business.businessName,
+                        riseOnHover: true
+                    });
+                    plainGroupMarkers.addLayer(marker);
+                    clusterGroupMarkers.addLayer(marker);
+                    oms.addMarker(marker);
+                }
+
+            });
+
+        });
+
     }
 
 }
@@ -106,12 +164,63 @@ function setActiveLayers() {
     }
 }
 
+function fetchTours() {
+
+
+    var tourSpreadsheetCallback = function (error, options, response) {
+
+        if (error) {
+            console.log(error);
+        } else {
+            response.rows.forEach(function (row) {
+                //save as structured data
+
+                // Some bug in Sheetrock isn't skipping the header for some reason..
+                if (row.cells["TourGroupName"] == "TourGroupName") return;
+
+                if (!tourStore.hasOwnProperty(row.cells["TourGroupName"])) {
+                    //initialize property if doesn't exist yet
+                    tourStore[row.cells["TourGroupName"]] = {
+                        "bus": row.cells["Bus"],
+                        "tourGroupName": row.cells["TourGroupName"],
+                        "stops": []
+                    };
+                }
+
+                var businessName = row.cells["Business"];
+
+                var businessObject = businessStore[businessName];
+
+                var tour = tourStore[row.cells["TourGroupName"]];
+
+                tour.stops[tour.stops.length] = {
+                    "tourTime": row.cells["Time"],
+                    "tourGuide": row.cells["Guide"],
+                    "business": businessObject
+                }
+            });
+
+            //finished processing spreadsheet rows
+            //setTimeout(updateDisplay, 100);
+        }
+    };
+
+    $('#tour_container').sheetrock({
+        url: tourSpreadsheet,
+        sql: "select *",
+        callback: tourSpreadsheetCallback,
+        reset: true
+    });
+
+}
+
 $(document).ready(function () {
 
     //tech tour map id: mlake900.nb1o1aik
 
     var zoomLevel = 14;
     if ($(window).width() < 550) zoomLevel = 12;
+
 
     L.mapbox.accessToken = 'pk.eyJ1IjoibWxha2U5MDAiLCJhIjoiSXV0UEF6dyJ9.8ZrYcafYb59U67LHErUegw';
     map = L.mapbox.map('map', 'mlake900.lae6oebe', {
@@ -122,6 +231,7 @@ $(document).ready(function () {
     //map.touchZoom.disable();
     //map.doubleClickZoom.disable();
 
+    oms = new OverlappingMarkerSpiderfier(map);
 
     map.scrollWheelZoom.disable();
     map.zoomControl.setPosition('topright');
@@ -138,16 +248,16 @@ $(document).ready(function () {
     tourTemplate = Handlebars.compile($('#tour_template').html());
 
 
-    var businessSpreadsheetCallback = function (error, options, response){
+    var businessSpreadsheetCallback = function (error, options, response) {
 
-        if (error){
+        if (error) {
             console.log(error);
         } else {
-            response.rows.forEach(function(row){
+            response.rows.forEach(function (row) {
                 //save as structured data
 
                 businessStore[row.cells["Name"]] = {
-                    "businessName" : row.cells["Name"],
+                    "businessName": row.cells["Name"],
                     "venueName": row.cells["TourVenue"],
                     "venueAddress": row.cells["TourAddress"],
                     "venueCoordinates": row.cells["TourGPS"].split(",")
@@ -157,14 +267,13 @@ $(document).ready(function () {
             //finished processing spreadsheet rows
             setTimeout(updateDisplay, 100);
 
-            //TODO: call sheetrock to grab tours
+            setTimeout(fetchTours, 100);
+
         }
     };
 
     $('#business_container').sheetrock({
         url: businessSpreadsheet,
-        headersOff: true,
-        rowGroups: false,
         sql: "select * where D contains 'YES' order by A",
         callback: businessSpreadsheetCallback,
         reset: true
