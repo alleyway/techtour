@@ -60,6 +60,7 @@ $(function () {
         $('.selection_container li').toggleClass("active_tab");
         var searchField = $('#search');
         searchField.val("");
+        searchField.focus();
         businessTabSelected = !businessTabSelected;
         if (businessTabSelected) {
             searchField.attr("placeholder", "Search businesses..")
@@ -126,6 +127,15 @@ function updateDisplay() {
 
         var count = -1;
         $.map(tourStore, function (tourObject) {
+
+            if (searchValue.length > 0) {
+                var found = false;
+                if (tourObject.tourGroupName.toLowerCase().indexOf(searchValue) > -1) {
+                    found = true;
+                }
+                if (!found) return;
+            }
+
             count++;
             //TODO: color icon based on which number we're in
 
@@ -175,14 +185,17 @@ function fetchTours() {
             response.rows.forEach(function (row) {
                 //save as structured data
 
+                var tourGroupName = row.cells["TourGroupName"];
                 // Some bug in Sheetrock isn't skipping the header for some reason..
-                if (row.cells["TourGroupName"] == "TourGroupName") return;
+                if (tourGroupName == "TourGroupName") return;
 
-                if (!tourStore.hasOwnProperty(row.cells["TourGroupName"])) {
+                if ($.isNumeric(tourGroupName)) tourGroupName = "Tour Group " + tourGroupName;
+
+                if (!tourStore.hasOwnProperty(tourGroupName)) {
                     //initialize property if doesn't exist yet
-                    tourStore[row.cells["TourGroupName"]] = {
+                    tourStore[tourGroupName] = {
                         "bus": row.cells["Bus"],
-                        "tourGroupName": row.cells["TourGroupName"],
+                        "tourGroupName": tourGroupName,
                         "stops": []
                     };
                 }
@@ -191,7 +204,7 @@ function fetchTours() {
 
                 var businessObject = businessStore[businessName];
 
-                var tour = tourStore[row.cells["TourGroupName"]];
+                var tour = tourStore[tourGroupName];
 
                 tour.stops[tour.stops.length] = {
                     "tourTime": row.cells["Time"],
