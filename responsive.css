@@ -14,6 +14,22 @@ html {
     height: 100%;
 }
 
+.navbar-nav {
+    float:right;
+}
+.navbar-default {
+    border-bottom: 1pt solid rgba(0, 0, 0, .3);
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+}
+.navbar-brand {
+    padding: 5px;
+}
+
+#navbar_logo {
+    height:40px;
+}
+
 @media(min-width:767px) {
     .navbar {
         padding: 0;
@@ -126,5 +142,4 @@ html {
     margin-top: 20px;
     width: 100%;
     font-size: larger;
-
 }
