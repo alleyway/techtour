@@ -7,15 +7,18 @@
 body {
     width: 100%;
     height: 100%;
+    font-family: 'Open Sans', sans-serif;
 }
 
 html {
     width: 100%;
     height: 100%;
+    font-family: 'Open Sans', sans-serif;
 }
 
 .navbar-nav {
     float:right;
+    font-weight: 700;
 }
 .navbar-default {
     background-color: #fff;
@@ -56,6 +59,17 @@ html {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
+    border-bottom: 4px solid #808080;
+}
+
+#sponsors {
+    background-color: #fbb038;
+    color: white;
+    text-align: center;
+}
+#entry_container {
+    padding-right:0;
+    padding-left:0;
 }
 
 @media (max-width:1500px){
@@ -74,9 +88,16 @@ html {
     #map {
         padding-right:500px;
         width:70%;
-        border-right: 1px solid #b4b4b4;
-
     }
+
+    #sponsors {
+        width:70%;
+        position: fixed;
+        left:0;
+        bottom:0;
+        top:550px;
+    }
+
     #interaction_container {
         width:30%;
         position:fixed;
@@ -84,31 +105,43 @@ html {
         right:0;
         bottom:0;
         float:right;
+        border-left: 1px solid #b4b4b4;
     }
+
     #entry_container {
         overflow: scroll;
+        overflow-x: hidden;
         bottom:0;
         top:190px;
         width:30%;
         right:0;
         position:fixed;
-
     }
 }
 
 
 .business_entry {
+    text-align: left;
+    padding-left:10px;
     width: 100%;
-    margin: 20px auto;
-    background-color: #51e9ff;
-    border: 1px solid #122b40;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+}
+.business_entry:hover {
+    background-color: #eeeeee;
+    border-left: 2px solid #3c3c3c;
 }
 
 .tour_entry {
+    text-align: left;
+    padding-left:10px;
     width: 100%;
-    margin: 20px auto;
-    background-color: #51e9ff;
-    border: 1px solid #122b40;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
 }
 
 .intro-section {
@@ -139,21 +172,23 @@ html {
 }
 
 .selection_container {
-
     width: 100%;
     max-width: 560px;
     margin: 0 auto;
-    margin-top: 30px;
-    height:50px;
+    margin-top: 0px;
+    height:140px;
     display: table;
+    border-bottom: 4px solid #808080;
 }
 .selection_container ul {
     padding: 0;
+    border-bottom: 1px solid #fbb038;
+    height:50px;
 }
 
 
 .selection_container li {
-    background-color: #f6f7dd;
+    color: #7c7c7c;
     width:50%;
     display: table-cell;
     float: left;
@@ -161,15 +196,41 @@ html {
     padding-top:12px;
     font-weight: bold;
     cursor: pointer;
+
 }
 
 
 .active_tab {
-    border-bottom: 4px solid orange;
+    border-bottom: 5px solid #fbb038;
 }
 
 .search_field {
     margin-top: 20px;
-    width: 100%;
+    width: 90%;
+    margin-left:5px;
+    margin-right: 5px;
     font-size: larger;
+    font-family: 'Open Sans', sans-serif;
+    padding: 4px;
+}
+
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+    border-color: #fbb038;
+    box-shadow: 0;
+    outline: 0 none;
 }

@@ -11,6 +11,9 @@
 
     <title>CBIC Tech Tour Map</title>
 
+    <!-- google fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+
     <!-- Bootstrap Core CSS -->
     <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -35,22 +38,23 @@
     <script id="business_template" type="text/x-handlebars-template">
         <!-- TODO: outline in red if no GPS coordinates -->
         <div class="business_entry">
-            <h3>{{businessName}}</h3>
+            <h4>{{businessName}}</h4>
 
-            <div class="body">
-                {{venueName}}<br/>
-                {{venueAddress}}
-            </div>
+            <!--<div class="body">-->
+                <!--{{venueName}}<br/>-->
+                <!--{{venueAddress}}-->
+            <!--</div>-->
         </div>
     </script>
 
     <script id="tour_template" type="text/x-handlebars-template">
         <!-- TODO: outline in red if no GPS coordinates -->
         <div class="tour_entry">
-            <h2>{{tourGroupName}}</h2>
+            <h4>{{tourGroupName}}</h4>
 
             <div class="body">
-                {{#each stops}}{{business.businessName}} {{tourGuide}} {{tourTime}}<br/>{{/each}}
+                {{#each stops}}
+                <strong>{{business.businessName}}</strong> -  {{tourTime}},  {{tourGuide}} <br/>{{/each}}
             </div>
         </div>
     </script>
@@ -117,6 +121,10 @@
 
         <div id="entry_container"></div>
     </div>
+</section>
+
+<section id="sponsors">
+    Tech Tour full logo | sponsored by: CBIC full logo | made by Alleyway & Logo
 </section>
 
 <!--&lt;!&ndash; About Section &ndash;&gt;-->

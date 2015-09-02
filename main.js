@@ -291,7 +291,7 @@ $(document).ready(function () {
         callback: businessSpreadsheetCallback,
         reset: true
     });
-
+    $('#search').focus();
 });
 
 
