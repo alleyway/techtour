@@ -131,7 +131,7 @@ html {
 }
 .business_entry:hover {
     background-color: #eeeeee;
-    border-left: 2px solid #3c3c3c;
+    border-left: 4px solid #3c3c3c;
 }
 
 .tour_entry {
