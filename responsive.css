@@ -18,6 +18,7 @@ html {
     float:right;
 }
 .navbar-default {
+    background-color: #fff;
     border-bottom: 1pt solid rgba(0, 0, 0, .3);
     -webkit-background-clip: padding-box; /* for Safari */
     background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
@@ -43,6 +44,9 @@ html {
     }
 }
 
+#interaction_container {
+    width: 100%
+}
 
 #map {
     width: 100%;
@@ -66,6 +70,33 @@ html {
     }
 }
 
+@media (min-width:800px){
+    #map {
+        padding-right:500px;
+        width:70%;
+        border-right: 1px solid #b4b4b4;
+
+    }
+    #interaction_container {
+        width:30%;
+        position:fixed;
+        top:50px;
+        right:0;
+        bottom:0;
+        float:right;
+    }
+    #entry_container {
+        overflow: scroll;
+        bottom:0;
+        top:190px;
+        width:30%;
+        right:0;
+        position:fixed;
+
+    }
+}
+
+
 .business_entry {
     width: 100%;
     margin: 20px auto;
@@ -81,7 +112,6 @@ html {
 }
 
 .intro-section {
-    /*height: 100%;*/
     padding-top: 50px;
     text-align: center;
     background: #fff;

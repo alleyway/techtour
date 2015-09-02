@@ -35,7 +35,7 @@
     <script id="business_template" type="text/x-handlebars-template">
         <!-- TODO: outline in red if no GPS coordinates -->
         <div class="business_entry">
-            <h1>{{businessName}}</h1>
+            <h3>{{businessName}}</h3>
 
             <div class="body">
                 {{venueName}}<br/>
@@ -71,7 +71,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand page-scroll" href="#page-top"><img src="img/tech_tour_logo_toolbar.svg" id="navbar_logo" alt="Tech Tour" border="0"/></a>
+            <a class="navbar-brand page-scroll" href="#page-top"><img src="img/tech_tour_logo_toolbar.svg"
+                                                                      id="navbar_logo" alt="Tech Tour" border="0"/></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -103,43 +104,44 @@
     <div id="map"></div>
 
 
-    <div class="selection_container">
-    <ul>
-        <li class="active_tab">Businesses</li>
-        <li>Tours</li>
-    </ul>
+    <div id="interaction_container">
+        <div class="selection_container">
+            <ul>
+                <li class="active_tab">Businesses</li>
+                <li>Tours</li>
+            </ul>
 
-        <input id="search" class="search_field" type="text" placeholder="Search businesses..."/>
+            <input id="search" class="search_field" type="text" placeholder="Search businesses..."/>
 
-    </div>
-
-    <div id="entry_container"></div>
-
-</section>
-
-<!-- About Section -->
-<section id="about" class="about-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>About Section</h1>
-
-                Developed by Alleyway Consulting, LLC
-            </div>
         </div>
+
+        <div id="entry_container"></div>
     </div>
 </section>
 
-<!-- Contact Section -->
-<section id="contact" class="contact-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Contact Section</h1>
-            </div>
-        </div>
-    </div>
-</section>
+<!--&lt;!&ndash; About Section &ndash;&gt;-->
+<!--<section id="about" class="about-section">-->
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-lg-12">-->
+                <!--<h1>About Section</h1>-->
+
+                <!--Developed by Alleyway Consulting, LLC-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</section>-->
+
+<!--&lt;!&ndash; Contact Section &ndash;&gt;-->
+<!--<section id="contact" class="contact-section">-->
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-lg-12">-->
+                <!--<h1>Contact Section</h1>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</section>-->
 
 <!-- jQuery -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
