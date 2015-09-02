@@ -69,7 +69,7 @@ $(function () {
         $('.selection_container li').toggleClass("active_tab");
         var searchField = $('#search');
         searchField.val("");
-        searchField.focus();
+        focusIfDesktop();
         businessTabSelected = !businessTabSelected;
         if (businessTabSelected) {
             searchField.attr("placeholder", "Search businesses..")
@@ -296,6 +296,9 @@ function setActiveLayers() {
         map.addLayer(clusterGroupMarkers);
     }
 }
+function focusIfDesktop(){
+    if ($(window).width() > 550) $('#search').focus();
+}
 
 function fetchTours() {
 
@@ -429,7 +432,6 @@ $(document).ready(function () {
             setTimeout(updateDisplay, 100);
 
             setTimeout(fetchTours, 100);
-
         }
     };
 
@@ -439,7 +441,8 @@ $(document).ready(function () {
         callback: businessSpreadsheetCallback,
         reset: true
     });
-    $('#search').focus();
+
+    focusIfDesktop();
 
     plainGroupMarkers.on('mouseover', function (e) {
         e.layer.openPopup();
