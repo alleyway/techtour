@@ -156,7 +156,8 @@ function updateDisplay() {
                 var popupContent = businessObject.businessName;
 
                 marker.bindPopup(popupContent, {
-                    closeButton: false
+                    closeButton: false,
+                    closeOnClick: false
                 });
 
                 plainGroupMarkers.addLayer(marker);
@@ -181,16 +182,22 @@ function updateDisplay() {
 
             var title = $(e.currentTarget).find("h4").text();
 
-            $(e.currentTarget).toggleClass("business_entry_active");
+            $(".business_entry").removeClass("business_entry_active");
 
-            if (currentSelected) {
+            if (currentSelected && currentSelected == title) {
                 currentSelected = null;
                 //remove class
                 recenterView();
                 updateDisplay();
                 return;
             } else {
+                $(e.currentTarget).toggleClass("business_entry_active");
                 currentSelected = title;
+
+                //scrolls to top for when we're in mobile
+                $('html, body').stop().animate({
+                    scrollTop: 0
+                }, 1500, 'easeInOutExpo');
             }
 
             clusterGroupMarkers.clearLayers();
@@ -217,7 +224,10 @@ function updateDisplay() {
                     }
 
                 });
-                marker.openPopup();
+                setTimeout(function(){
+                    marker.openPopup();
+                }, 600);
+
             }
         });
 
@@ -352,7 +362,8 @@ $(document).ready(function () {
 
     L.mapbox.accessToken = 'pk.eyJ1IjoibWxha2U5MDAiLCJhIjoiSXV0UEF6dyJ9.8ZrYcafYb59U67LHErUegw';
     map = L.mapbox.map('map', 'mlake900.lae6oebe', {
-        zoomControl: true
+        zoomControl: true,
+        closePopupOnClick: false
 
     });
 
@@ -363,7 +374,25 @@ $(document).ready(function () {
     //map.touchZoom.disable();
     //map.doubleClickZoom.disable();
 
-    oms = new OverlappingMarkerSpiderfier(map);
+    oms = new OverlappingMarkerSpiderfier(map, {
+        keepSpiderfied: true
+    });
+
+    oms.addListener('click', function(marker) {
+        console.log('test');
+        //popup.setContent(marker.desc);
+        //popup.setLatLng(marker.getLatLng());
+        //map.openPopup(popup);
+
+
+        //var popupContent = " detail";
+        //
+        //marker.bindPopup(popupContent, {
+        //    closeButton: false
+        //});
+        //
+        marker.openPopup();
+    });
 
     map.scrollWheelZoom.disable();
     map.zoomControl.setPosition('topright');
