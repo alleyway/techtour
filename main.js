@@ -34,12 +34,12 @@ var currentSelected = null;
 
 var businessTabSelected = true;
 
-var distinctColors = ["#00FF00","#0000FF","#FF0000","#01FFFE","#FFA6FE","#FFDB66","#006401","#010067","#95003A","#007DB5",
-    "FF00F6","#FFEEE8","#774D00","#90FB92","#0076FF","#D5FF00","#FF937E","#6A826C","#FF029D","#FE8900","#7A4782","#7E2DD2",
-    "85A900","#FF0056","#A42400","#00AE7E","#683D3B","#BDC6FF","#263400","#BDD393","#00B917","#9E008E","#001544","#C28C9F",
-    "FF74A3","#01D0FF","#004754","#E56FFE","#788231","#0E4CA1","#91D0CB","#BE9970","#968AE8","#BB8800","#43002C","#DEFF74",
-    "00FFC6","#FFE502","#620E00","#008F9C","#98FF52","#7544B1","#B500FF","#00FF78","#FF6E41","#005F39","#6B6882","#5FAD4E",
-    "A75740","#A5FFD2","#FFB167","#009BFF","#E85EBE"];
+var distinctColors = ["#00FF00", "#0000FF", "#FF0000", "#01FFFE", "#FFA6FE", "#FFDB66", "#006401", "#010067", "#95003A", "#007DB5",
+    "FF00F6", "#FFEEE8", "#774D00", "#90FB92", "#0076FF", "#D5FF00", "#FF937E", "#6A826C", "#FF029D", "#FE8900", "#7A4782", "#7E2DD2",
+    "85A900", "#FF0056", "#A42400", "#00AE7E", "#683D3B", "#BDC6FF", "#263400", "#BDD393", "#00B917", "#9E008E", "#001544", "#C28C9F",
+    "FF74A3", "#01D0FF", "#004754", "#E56FFE", "#788231", "#0E4CA1", "#91D0CB", "#BE9970", "#968AE8", "#BB8800", "#43002C", "#DEFF74",
+    "00FFC6", "#FFE502", "#620E00", "#008F9C", "#98FF52", "#7544B1", "#B500FF", "#00FF78", "#FF6E41", "#005F39", "#6B6882", "#5FAD4E",
+    "A75740", "#A5FFD2", "#FFB167", "#009BFF", "#E85EBE"];
 
 //jQuery to collapse the navbar on scroll
 $(window).scroll(function () {
@@ -89,7 +89,7 @@ $(function () {
     });
 });
 
-function recenterView(){
+function recenterView() {
 
     var zoomLevel = 14;
     if ($(window).width() < 550) zoomLevel = 12;
@@ -97,7 +97,7 @@ function recenterView(){
     map.setView([38.032, -78.492], zoomLevel);
 }
 
-function createBusinessMarker(businessObject){
+function createBusinessMarker(businessObject) {
 
     var coords = $(businessObject.venueCoordinates);
 
@@ -152,10 +152,10 @@ function updateDisplay() {
             entryContainer.append(businessTemplate(businessObject));
 
             var marker = createBusinessMarker(businessObject);
-            if (marker){ //marker may not be created if coords don't exist
+            if (marker) { //marker may not be created if coords don't exist
                 var popupContent = businessObject.businessName;
 
-                marker.bindPopup(popupContent,{
+                marker.bindPopup(popupContent, {
                     closeButton: false
                 });
 
@@ -165,31 +165,31 @@ function updateDisplay() {
             }
         });
 
-        $(".business_entry").mouseenter(function(e){
+        $(".business_entry").mouseenter(function (e) {
 
             if (currentSelected) return;
 
             var title = $(e.target).find("h4").text();
-            plainGroupMarkers.eachLayer(function(marker) {
+            plainGroupMarkers.eachLayer(function (marker) {
                 if (marker.options.alt == title) {
                     marker.openPopup();
                 } else {
                     marker.closePopup();
                 }
             });
-        }).click(function(e){
+        }).click(function (e) {
 
             var title = $(e.currentTarget).find("h4").text();
 
             $(e.currentTarget).toggleClass("business_entry_active");
 
-            if (currentSelected){
+            if (currentSelected) {
                 currentSelected = null;
                 //remove class
                 recenterView();
                 updateDisplay();
                 return;
-            } else{
+            } else {
                 currentSelected = title;
             }
 
@@ -200,10 +200,10 @@ function updateDisplay() {
 
             var businessObject = businessStore[title];
             var marker = createBusinessMarker(businessObject);
-            if (marker){ //marker may not be created if coords don't exist
+            if (marker) { //marker may not be created if coords don't exist
                 var popupContent = businessObject.businessName + " detail";
 
-                marker.bindPopup(popupContent,{
+                marker.bindPopup(popupContent, {
                     closeButton: false
                 });
 
@@ -223,7 +223,6 @@ function updateDisplay() {
 
     } else {
 
-        var count = -1;
         $.map(tourStore, function (tourObject) {
 
             if (searchValue.length > 0) {
@@ -231,13 +230,21 @@ function updateDisplay() {
                 if (tourObject.tourGroupName.toLowerCase().indexOf(searchValue) > -1) {
                     found = true;
                 }
+                tourObject.stops.forEach(function (tourStop) {
+                    if ( tourStop.tourGuide.toLowerCase().indexOf(searchValue) > -1){
+                        found = true;
+                    }
+                    if (tourStop.business && tourStop.business.businessName.toLowerCase().indexOf(searchValue) > -1){
+                        found = true;
+                    }
+                });
+
                 if (!found) return;
             }
 
-            count++;
 
             // iterate through objects and add to display
-            tourObject["color"] = distinctColors[count];
+
             entryContainer.append(tourTemplate(tourObject));
 
             tourObject.stops.forEach(function (tourStop) {
@@ -250,7 +257,7 @@ function updateDisplay() {
                     var icon = L.mapbox.marker.icon({
                         'marker-size': 'large',
                         'marker-symbol': 'circle',
-                        'marker-color': distinctColors[count]
+                        'marker-color': tourObject.color
                     });
 
                     var marker = L.marker(new L.LatLng(coords[0], coords[1]), {
@@ -288,6 +295,8 @@ function fetchTours() {
         if (error) {
             console.log(error);
         } else {
+
+            var count = -1;
             response.rows.forEach(function (row) {
                 //save as structured data
 
@@ -295,13 +304,16 @@ function fetchTours() {
                 // Some bug in Sheetrock isn't skipping the header for some reason..
                 if (tourGroupName == "TourGroupName") return;
 
+
                 if ($.isNumeric(tourGroupName)) tourGroupName = "Tour Group " + tourGroupName;
 
                 if (!tourStore.hasOwnProperty(tourGroupName)) {
+                    count++;
                     //initialize property if doesn't exist yet
                     tourStore[tourGroupName] = {
                         "bus": row.cells["Bus"],
                         "tourGroupName": tourGroupName,
+                        "color": distinctColors[count],
                         "stops": []
                     };
                 }
@@ -336,7 +348,6 @@ function fetchTours() {
 $(document).ready(function () {
 
     //tech tour map id: mlake900.nb1o1aik
-
 
 
     L.mapbox.accessToken = 'pk.eyJ1IjoibWxha2U5MDAiLCJhIjoiSXV0UEF6dyJ9.8ZrYcafYb59U67LHErUegw';
@@ -401,10 +412,9 @@ $(document).ready(function () {
     });
     $('#search').focus();
 
-    plainGroupMarkers.on('mouseover', function(e) {
+    plainGroupMarkers.on('mouseover', function (e) {
         e.layer.openPopup();
     });
-
 
 
 });
