@@ -118,7 +118,10 @@ html {
         position:fixed;
     }
 }
-
+.leaflet-popup-content {
+    padding: 4px;
+    font-weight: 500;
+}
 
 .business_entry {
     text-align: left;
@@ -130,9 +133,15 @@ html {
     cursor: pointer;
 }
 .business_entry:hover {
-    background-color: #eeeeee;
+    background-color: #f7f7f7;
     border-left: 4px solid #3c3c3c;
 }
+
+.business_entry_active, .business_entry_active:hover {
+    background-color: #eeeeee;
+    border-left: 8px solid #3c3c3c;
+}
+
 
 .tour_entry {
     text-align: left;

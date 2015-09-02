@@ -30,6 +30,8 @@ var businessTemplate;
 
 var tourTemplate;
 
+var currentSelected = null;
+
 var businessTabSelected = true;
 
 var distinctColors = ["#00FF00","#0000FF","#FF0000","#01FFFE","#FFA6FE","#FFDB66","#006401","#010067","#95003A","#007DB5",
@@ -74,8 +76,9 @@ $(function () {
         } else {
             searchField.attr("placeholder", "Search tours..")
         }
-
+        recenterView();
         updateDisplay();
+        currentSelected = null;
 
     });
 });
@@ -86,6 +89,37 @@ $(function () {
     });
 });
 
+function recenterView(){
+
+    var zoomLevel = 14;
+    if ($(window).width() < 550) zoomLevel = 12;
+
+    map.setView([38.032, -78.492], zoomLevel);
+}
+
+function createBusinessMarker(businessObject){
+
+    var coords = $(businessObject.venueCoordinates);
+
+    if (coords.length == 2 && ($.isNumeric(coords[0]) && $.isNumeric(coords[1]))) {
+
+        var icon = L.mapbox.marker.icon({
+            'marker-size': 'large',
+            'marker-symbol': 'circle',
+            'marker-color': '#fbb038'
+        });
+
+        var marker = L.marker(new L.LatLng(coords[0], coords[1]), {
+            alt: businessObject.businessName,
+            riseOnHover: true,
+            icon: icon
+        });
+
+        return marker;
+
+    }
+}
+
 function updateDisplay() {
 
     var entryContainer = $('#entry_container');
@@ -94,7 +128,7 @@ function updateDisplay() {
 
     clusterGroupMarkers.clearLayers();
     plainGroupMarkers.clearLayers();
-    oms.clearMarkers()
+    oms.clearMarkers();
 
     entryContainer.empty();
 
@@ -117,28 +151,75 @@ function updateDisplay() {
             // iterate through objects and add to display
             entryContainer.append(businessTemplate(businessObject));
 
-            var coords = $(businessObject.venueCoordinates);
-            if (coords.length == 2 && ($.isNumeric(coords[0]) && $.isNumeric(coords[1]))) {
+            var marker = createBusinessMarker(businessObject);
+            if (marker){ //marker may not be created if coords don't exist
+                var popupContent = businessObject.businessName;
 
-                var icon = L.mapbox.marker.icon({
-                    'marker-size': 'large',
-                    'marker-symbol': 'circle',
-                    'marker-color': '#fbb038'
+                marker.bindPopup(popupContent,{
+                    closeButton: false
                 });
 
-
-                var marker = L.marker(new L.LatLng(coords[0], coords[1]), {
-                    title: businessObject.businessName,
-                    riseOnHover: true,
-                    icon: icon
-
-                });
                 plainGroupMarkers.addLayer(marker);
                 clusterGroupMarkers.addLayer(marker);
                 oms.addMarker(marker);
             }
         });
 
+        $(".business_entry").mouseenter(function(e){
+
+            if (currentSelected) return;
+
+            var title = $(e.target).find("h4").text();
+            plainGroupMarkers.eachLayer(function(marker) {
+                if (marker.options.alt == title) {
+                    marker.openPopup();
+                } else {
+                    marker.closePopup();
+                }
+            });
+        }).click(function(e){
+
+            var title = $(e.currentTarget).find("h4").text();
+
+            $(e.currentTarget).toggleClass("business_entry_active");
+
+            if (currentSelected){
+                currentSelected = null;
+                //remove class
+                recenterView();
+                updateDisplay();
+                return;
+            } else{
+                currentSelected = title;
+            }
+
+            clusterGroupMarkers.clearLayers();
+            plainGroupMarkers.clearLayers();
+            oms.clearMarkers();
+
+
+            var businessObject = businessStore[title];
+            var marker = createBusinessMarker(businessObject);
+            if (marker){ //marker may not be created if coords don't exist
+                var popupContent = businessObject.businessName + " detail";
+
+                marker.bindPopup(popupContent,{
+                    closeButton: false
+                });
+
+                plainGroupMarkers.addLayer(marker);
+                clusterGroupMarkers.addLayer(marker);
+                oms.addMarker(marker);
+                map.setView(marker.getLatLng(), 15, {
+                    animate: true,
+                    pan: {
+                        duration: 0.5
+                    }
+
+                });
+                marker.openPopup();
+            }
+        });
 
     } else {
 
@@ -256,15 +337,17 @@ $(document).ready(function () {
 
     //tech tour map id: mlake900.nb1o1aik
 
-    var zoomLevel = 14;
-    if ($(window).width() < 550) zoomLevel = 12;
 
 
     L.mapbox.accessToken = 'pk.eyJ1IjoibWxha2U5MDAiLCJhIjoiSXV0UEF6dyJ9.8ZrYcafYb59U67LHErUegw';
     map = L.mapbox.map('map', 'mlake900.lae6oebe', {
         zoomControl: true
 
-    }).setView([38.032, -78.492], zoomLevel);
+    });
+
+    recenterView();
+
+
     //map.dragging.disable();
     //map.touchZoom.disable();
     //map.doubleClickZoom.disable();
@@ -317,6 +400,13 @@ $(document).ready(function () {
         reset: true
     });
     $('#search').focus();
+
+    plainGroupMarkers.on('mouseover', function(e) {
+        e.layer.openPopup();
+    });
+
+
+
 });
 
 
