@@ -243,3 +243,14 @@ input[type="color"]:focus,
     box-shadow: 0;
     outline: 0 none;
 }
+
+.leaflet-bar a {
+    width: 36px;
+    height: 36px;
+}
+.leaflet-bar .leaflet-control-zoom-out {
+    background-position: 4px -24px;
+}
+.leaflet-bar .leaflet-control-zoom-in {
+    background-position: 4px 4px;
+}
