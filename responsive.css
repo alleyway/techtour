@@ -254,3 +254,15 @@ input[type="color"]:focus,
 .leaflet-bar .leaflet-control-zoom-in {
     background-position: 4px 4px;
 }
+
+.business_detail {
+    text-align: center;
+}
+.business_detail a {
+    padding: 4px;
+    border: 1px solid lightgray;
+}
+
+#sponsors img {
+    margin: 30px 15px 15px;
+}

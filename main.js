@@ -28,6 +28,8 @@ var tourStore = {};
 
 var businessTemplate;
 
+var businessDetailTemplate;
+
 var tourTemplate;
 
 var currentSelected = null;
@@ -189,6 +191,13 @@ function updateDisplay() {
                 //remove class
                 recenterView();
                 updateDisplay();
+                plainGroupMarkers.eachLayer(function (marker) {
+                    if (marker.options.alt == title) {
+                        marker.openPopup();
+                    } else {
+                        marker.closePopup();
+                    }
+                });
                 return;
             } else {
                 $(e.currentTarget).toggleClass("business_entry_active");
@@ -208,10 +217,12 @@ function updateDisplay() {
             var businessObject = businessStore[title];
             var marker = createBusinessMarker(businessObject);
             if (marker) { //marker may not be created if coords don't exist
-                var popupContent = businessObject.businessName + " detail";
+                var popupContent = businessDetailTemplate(businessObject);
 
                 marker.bindPopup(popupContent, {
-                    closeButton: false
+                    closeButton: false,
+                    minWidth:60
+
                 });
 
                 plainGroupMarkers.addLayer(marker);
@@ -410,7 +421,7 @@ $(document).ready(function () {
 
     businessTemplate = Handlebars.compile($('#business_template').html());
     tourTemplate = Handlebars.compile($('#tour_template').html());
-
+    businessDetailTemplate = Handlebars.compile($('#popup_business_detail_template').html());
 
     var businessSpreadsheetCallback = function (error, options, response) {
 
