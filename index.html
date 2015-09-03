@@ -61,9 +61,10 @@
 
     <script id="popup_business_detail_template" type="text/x-handlebars-template">
         <div class="business_detail">
-            <strong>{{businessName}}</strong><br />
+            <span class="business_title">{{businessName}}</span><br />
             <div style="width:190px; padding-bottom: 6px; padding-top:6px; margin: 4px auto;">
-                <nobr><a href="#website"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;  <a href="#directions"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
+
+                <nobr>{{#if businessWebsite}}<a href="{{businessWebsite}}" target="_blank"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}}  <a href="https://www.google.com/maps/dir/Current+Location/{{venueCoordinates.[0]}},{{venueCoordinates.[1]}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
             </div>
 
         </div>

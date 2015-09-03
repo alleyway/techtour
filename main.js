@@ -431,8 +431,17 @@ $(document).ready(function () {
             response.rows.forEach(function (row) {
                 //save as structured data
 
+                var website = row.cells["Website"];
+
+                if (website && website.length > 1){
+                    if (website.toLowerCase().indexOf("http://") == -1) website = "http://" + website;
+                } else {
+                    website = null;
+                }
+
                 businessStore[row.cells["Name"]] = {
                     "businessName": row.cells["Name"],
+                    "businessWebsite": website,
                     "venueName": row.cells["TourVenue"],
                     "venueAddress": row.cells["TourAddress"],
                     "venueCoordinates": row.cells["TourGPS"].split(",")

@@ -268,3 +268,7 @@ input[type="color"]:focus,
 #sponsors img {
     margin: 30px 15px 15px;
 }
+
+.business_title {
+    font-weight: 500;
+}
