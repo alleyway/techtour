@@ -257,9 +257,10 @@ input[type="color"]:focus,
 
 .business_detail {
     text-align: center;
+    font-size: larger;
 }
 .business_detail a {
-    padding: 4px;
+    padding: 5px;
     border: 1px solid lightgray;
 }
 
