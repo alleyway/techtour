@@ -409,7 +409,7 @@ $(document).ready(function () {
     });
 
     map.scrollWheelZoom.disable();
-    map.zoomControl.setPosition('topright');
+    map.zoomControl.setPosition('bottomleft');
 
     map.on('zoomend', function () {
         setActiveLayers();
