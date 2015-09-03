@@ -78,7 +78,7 @@ $(function () {
         } else {
             searchField.attr("placeholder", "Search tours..")
         }
-        recenterView();
+        resetZoom();
         updateDisplay();
         currentSelected = null;
 
@@ -91,12 +91,12 @@ $(function () {
     });
 });
 
-function recenterView() {
+function resetZoom() {
 
     var zoomLevel = 14;
     if ($(window).width() < 550) zoomLevel = 12;
 
-    map.setView([38.032, -78.492], zoomLevel);
+    map.setZoom(zoomLevel);
 }
 
 function createBusinessMarker(businessObject) {
@@ -120,6 +120,37 @@ function createBusinessMarker(businessObject) {
         return marker;
 
     }
+}
+
+function showDetailMarker(businessObject) {
+    clusterGroupMarkers.clearLayers();
+    plainGroupMarkers.clearLayers();
+    oms.clearMarkers();
+
+    var marker = createBusinessMarker(businessObject);
+    if (marker) { //marker may not be created if coords don't exist
+        var popupContent = businessDetailTemplate(businessObject);
+
+        marker.bindPopup(popupContent, {
+            closeButton: false,
+            minWidth: 60
+        });
+
+        plainGroupMarkers.addLayer(marker);
+        clusterGroupMarkers.addLayer(marker);
+        oms.addMarker(marker);
+        map.setView(marker.getLatLng(), 15, {
+            animate: true,
+            pan: {
+                duration: 0.5
+            }
+        });
+        setTimeout(function () {
+            marker.openPopup();
+        }, 600);
+
+    }
+
 }
 
 function updateDisplay() {
@@ -189,7 +220,7 @@ function updateDisplay() {
             if (currentSelected && currentSelected == title) {
                 currentSelected = null;
                 //remove class
-                recenterView();
+                resetZoom();
                 updateDisplay();
                 plainGroupMarkers.eachLayer(function (marker) {
                     if (marker.options.alt == title) {
@@ -209,37 +240,10 @@ function updateDisplay() {
                 }, 1500, 'easeInOutExpo');
             }
 
-            clusterGroupMarkers.clearLayers();
-            plainGroupMarkers.clearLayers();
-            oms.clearMarkers();
-
-
             var businessObject = businessStore[title];
-            var marker = createBusinessMarker(businessObject);
-            if (marker) { //marker may not be created if coords don't exist
-                var popupContent = businessDetailTemplate(businessObject);
 
-                marker.bindPopup(popupContent, {
-                    closeButton: false,
-                    minWidth:60
+            showDetailMarker(businessObject);
 
-                });
-
-                plainGroupMarkers.addLayer(marker);
-                clusterGroupMarkers.addLayer(marker);
-                oms.addMarker(marker);
-                map.setView(marker.getLatLng(), 15, {
-                    animate: true,
-                    pan: {
-                        duration: 0.5
-                    }
-
-                });
-                setTimeout(function(){
-                    marker.openPopup();
-                }, 600);
-
-            }
         });
 
     } else {
@@ -252,10 +256,10 @@ function updateDisplay() {
                     found = true;
                 }
                 tourObject.stops.forEach(function (tourStop) {
-                    if ( tourStop.tourGuide.toLowerCase().indexOf(searchValue) > -1){
+                    if (tourStop.tourGuide.toLowerCase().indexOf(searchValue) > -1) {
                         found = true;
                     }
-                    if (tourStop.business && tourStop.business.businessName.toLowerCase().indexOf(searchValue) > -1){
+                    if (tourStop.business && tourStop.business.businessName.toLowerCase().indexOf(searchValue) > -1) {
                         found = true;
                     }
                 });
@@ -307,7 +311,7 @@ function setActiveLayers() {
         map.addLayer(clusterGroupMarkers);
     }
 }
-function focusIfDesktop(){
+function focusIfDesktop() {
     if (!isMobile.any()) $('#search').focus();
 }
 
@@ -381,8 +385,9 @@ $(document).ready(function () {
 
     });
 
-    recenterView();
+    map.setView([38.032, -78.492]);
 
+    resetZoom();
 
     //map.dragging.disable();
     //map.touchZoom.disable();
@@ -392,20 +397,33 @@ $(document).ready(function () {
         keepSpiderfied: true
     });
 
-    oms.addListener('click', function(marker) {
+    oms.addListener('click', function (marker) {
         console.log('test');
-        //popup.setContent(marker.desc);
-        //popup.setLatLng(marker.getLatLng());
-        //map.openPopup(popup);
 
 
-        //var popupContent = " detail";
-        //
-        //marker.bindPopup(popupContent, {
-        //    closeButton: false
-        //});
-        //
-        marker.openPopup();
+
+        if (currentSelected){
+            currentSelected = null;
+            resetZoom();
+            updateDisplay();
+            setTimeout(function(){
+                plainGroupMarkers.eachLayer(function (marker) {
+                    if (marker.options.alt == title) {
+                        marker.openPopup();
+                    } else {
+                        marker.closePopup();
+                    }
+                });
+            }, 550);
+
+            return;
+        }
+
+        currentSelected = marker.options.alt;
+        var businessObject = businessStore[marker.options.alt];
+        showDetailMarker(businessObject);
+
+
     });
 
     map.scrollWheelZoom.disable();
@@ -433,8 +451,8 @@ $(document).ready(function () {
 
                 var website = row.cells["Website"];
 
-                if (website && website.length > 1){
-                    if (website.toLowerCase().indexOf("http://") == -1) website = "http://" + website;
+                if (website && website.length > 1) {
+                    if (website.toLowerCase().indexOf("http") == -1) website = "http://" + website;
                 } else {
                     website = null;
                 }
@@ -472,24 +490,23 @@ $(document).ready(function () {
 });
 
 
-
 var isMobile = {
-    Android: function() {
+    Android: function () {
         return navigator.userAgent.match(/Android/i);
     },
-    BlackBerry: function() {
+    BlackBerry: function () {
         return navigator.userAgent.match(/BlackBerry/i);
     },
-    iOS: function() {
+    iOS: function () {
         return navigator.userAgent.match(/iPhone|iPad|iPod/i);
     },
-    Opera: function() {
+    Opera: function () {
         return navigator.userAgent.match(/Opera Mini/i);
     },
-    Windows: function() {
+    Windows: function () {
         return navigator.userAgent.match(/IEMobile/i);
     },
-    any: function() {
+    any: function () {
         return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
     }
 };
