@@ -34,6 +34,8 @@ var tourTemplate;
 
 var currentSelected = null;
 
+var lastTapped = null;
+
 var businessTabSelected = true;
 
 var distinctColors = ["#00FF00", "#0000FF", "#FF0000", "#01FFFE", "#FFA6FE", "#FFDB66", "#006401", "#010067", "#95003A", "#007DB5",
@@ -162,7 +164,7 @@ function updateDisplay() {
     clusterGroupMarkers.clearLayers();
     plainGroupMarkers.clearLayers();
     oms.clearMarkers();
-
+    lastTapped = null;
     entryContainer.empty();
 
     //based on what's selected, or what's being searched
@@ -401,6 +403,12 @@ $(document).ready(function () {
         console.log('test');
 
 
+        if (isMobile.any() && lastTapped != marker.options.alt) {
+            marker.openPopup();
+            lastTapped = marker.options.alt;
+            return;
+        }
+
 
         if (currentSelected){
             currentSelected = null;
@@ -420,8 +428,11 @@ $(document).ready(function () {
         }
 
         currentSelected = marker.options.alt;
-        var businessObject = businessStore[marker.options.alt];
-        showDetailMarker(businessObject);
+
+        if (businessTabSelected){
+            var businessObject = businessStore[marker.options.alt];
+            showDetailMarker(businessObject);
+        }
 
 
     });
