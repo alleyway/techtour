@@ -424,11 +424,10 @@ $(document).ready(function () {
             lastTapped = marker.options.alt;
             return;
         }
-
+        lastTapped = marker.options.alt;
 
         if (currentSelected){
             //save marker to be opened after zooming out
-            lastTapped = currentSelected;
             currentSelected = null;
             resetZoom();
             updateDisplay();
