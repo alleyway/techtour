@@ -282,3 +282,7 @@ input[type="color"]:focus,
 .basic_popup {
     cursor: pointer;
 }
+.basic_popup:hover {
+    color: #0078A8;
+    text-decoration: underline;
+}

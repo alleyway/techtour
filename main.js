@@ -418,7 +418,6 @@ $(document).ready(function () {
     oms.addListener('click', function (marker) {
         console.log('test');
 
-
         if (isMobile.any() && lastTapped != marker.options.alt) {
             marker.openPopup();
             lastTapped = marker.options.alt;
@@ -427,12 +426,15 @@ $(document).ready(function () {
 
 
         if (currentSelected){
+            //save marker to be opened after zooming out
+            var reopenTitle = currentSelected;
+
             currentSelected = null;
             resetZoom();
             updateDisplay();
             setTimeout(function(){
                 plainGroupMarkers.eachLayer(function (marker) {
-                    if (marker.options.alt == title) {
+                    if (marker.options.alt == reopenTitle) {
                         marker.openPopup();
                     } else {
                         marker.closePopup();
@@ -516,7 +518,9 @@ $(document).ready(function () {
 
     map.on('popupopen', function() {
         $('.basic_popup').click(function(e){
-            var businessObject = businessStore[$(e.currentTarget).text()];
+            var title = $(e.currentTarget).text();
+            var businessObject = businessStore[title];
+            currentSelected = title;
             showDetailMarker(businessObject);
         });
     });
