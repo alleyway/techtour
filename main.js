@@ -148,7 +148,10 @@ function showDetailMarker(businessObject) {
         plainGroupMarkers.addLayer(marker);
         clusterGroupMarkers.addLayer(marker);
         oms.addMarker(marker);
-        map.setView(marker.getLatLng(), 15, {
+
+        //show viewer higher up to accommodate popup
+        var raisedLatLng = L.latLng(marker.getLatLng().lat +.002, marker.getLatLng().lng);
+        map.setView(raisedLatLng, 15, {
             animate: true,
             pan: {
                 duration: 0.5
