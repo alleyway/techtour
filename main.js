@@ -40,12 +40,11 @@ var lastTapped = null;
 
 var businessTabSelected = true;
 
-var distinctColors = ["#00FF00", "#0000FF", "#FF0000", "#01FFFE", "#FFA6FE", "#FFDB66", "#006401", "#010067", "#95003A", "#007DB5",
-    "FF00F6", "#FFEEE8", "#774D00", "#90FB92", "#0076FF", "#D5FF00", "#FF937E", "#6A826C", "#FF029D", "#FE8900", "#7A4782", "#7E2DD2",
-    "85A900", "#FF0056", "#A42400", "#00AE7E", "#683D3B", "#BDC6FF", "#263400", "#BDD393", "#00B917", "#9E008E", "#001544", "#C28C9F",
-    "FF74A3", "#01D0FF", "#004754", "#E56FFE", "#788231", "#0E4CA1", "#91D0CB", "#BE9970", "#968AE8", "#BB8800", "#43002C", "#DEFF74",
-    "00FFC6", "#FFE502", "#620E00", "#008F9C", "#98FF52", "#7544B1", "#B500FF", "#00FF78", "#FF6E41", "#005F39", "#6B6882", "#5FAD4E",
-    "A75740", "#A5FFD2", "#FFB167", "#009BFF", "#E85EBE"];
+var distinctColors = [
+    "#fbb038","#f57f17","#f44336","#d32f2f","#d81b60","#ad1457","#6a1b9a","#673ab7","#4527a0","#3f51b5",
+    "#303f9f","#2196f3","#1976d2","#01579b","#00bcd4","#0097a7","#006064","#009688","#004d40","#4caf50",
+    "#388e3c","#33691e","#c0ca33","#9e9d24","#ff7043","#bf360c","#795548","#5d4037","#9e9e9e","#424242",
+    "#607d8b","#37474f","#fdd835","#ff4081"]
 
 //jQuery to collapse the navbar on scroll
 $(window).scroll(function () {
@@ -235,7 +234,7 @@ function updateDisplay() {
         }).click(function (e) {
 
             var title = $(e.currentTarget).find("h4").text();
-
+            lastTapped = title;
             $(".business_entry").removeClass("business_entry_active");
 
             if (currentSelected && currentSelected == title) {
