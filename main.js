@@ -419,7 +419,6 @@ $(document).ready(function () {
     });
 
     oms.addListener('click', function (marker) {
-        console.log('test');
 
         if (isMobile.any() && lastTapped != marker.options.alt) {
             marker.openPopup();
@@ -430,14 +429,13 @@ $(document).ready(function () {
 
         if (currentSelected){
             //save marker to be opened after zooming out
-            var reopenTitle = currentSelected;
-
+            lastTapped = currentSelected;
             currentSelected = null;
             resetZoom();
             updateDisplay();
             setTimeout(function(){
                 plainGroupMarkers.eachLayer(function (marker) {
-                    if (marker.options.alt == reopenTitle) {
+                    if (marker.options.alt == lastTapped) {
                         marker.openPopup();
                     } else {
                         marker.closePopup();
@@ -466,8 +464,6 @@ $(document).ready(function () {
     });
 
     setActiveLayers();
-    //TODO: L.control.fullscreen({position: "topright"}).addTo(map);
-
 
     businessTemplate = Handlebars.compile($('#business_template').html());
     tourTemplate = Handlebars.compile($('#tour_template').html());
