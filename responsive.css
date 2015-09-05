@@ -71,7 +71,17 @@ html {
     padding-right:0;
     padding-left:0;
 }
+#interaction_container {
+    background-color: #fafafa;
+}
 
+.business_entry:first-child {
+    border-top: 1px solid #e2e2e2;
+}
+
+.tour_entry:first-child {
+    border-top: 1px solid #e2e2e2;
+}
 @media (max-width:1500px){
     #map {
         height: 500px;
@@ -116,34 +126,55 @@ html {
         width:30%;
         right:0;
         position:fixed;
+        padding-left: 20px;
+        padding-right: 10px;
     }
+
+    .business_entry:first-child {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+    .tour_entry:first-child {
+        border-top-left-radius: 3px;
+        border-top-right-radius: 3px;
+    }
+
 }
 .leaflet-popup-content {
     padding: 4px;
     font-weight: 500;
 }
 
+
+
 .business_entry {
+    color: #777;
+    background-color: white;
     text-align: left;
     padding-left:10px;
     width: 100%;
     padding-top: 5px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #e2e2e2;
+    border-left: 1px solid #e2e2e2;
+    border-right: 1px solid #e2e2e2;
     cursor: pointer;
 }
+
 .business_entry:hover {
     background-color: #f7f7f7;
-    border-left: 4px solid #3c3c3c;
+    border-left: 4px solid #767676;
 }
 
 .business_entry_active, .business_entry_active:hover {
-    background-color: #eeeeee;
-    border-left: 8px solid #3c3c3c;
+    background-color: #f9f9f9;
+    border-left: 8px solid #767676;
 }
 
 
 .tour_entry {
+    color: #777;
+    background-color: white;
     text-align: left;
     padding-left:10px;
     width: 100%;
@@ -151,6 +182,7 @@ html {
     padding-bottom: 5px;
     cursor: pointer;
     border-bottom: 1px solid #ccc;
+    border-right: 1px solid #e2e2e2;
 }
 
 .intro-section {
@@ -182,17 +214,16 @@ html {
 
 .selection_container {
     width: 100%;
-    max-width: 560px;
     margin: 0 auto;
     margin-top: 0px;
     height:140px;
     display: table;
-    border-bottom: 4px solid #808080;
 }
 .selection_container ul {
     padding: 0;
     border-bottom: 1px solid #fbb038;
     height:50px;
+    background-color: white;
 }
 
 
