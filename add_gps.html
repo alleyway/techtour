@@ -35,41 +35,6 @@
     <![endif]-->
 
 
-    <script id="business_template" type="text/x-handlebars-template">
-        <!-- TODO: outline in red if no GPS coordinates -->
-        <div class="business_entry">
-            <h4>{{businessName}}</h4>
-
-            <!--<div class="body">-->
-                <!--{{venueName}}<br/>-->
-                <!--{{venueAddress}}-->
-            <!--</div>-->
-        </div>
-    </script>
-
-    <script id="tour_template" type="text/x-handlebars-template">
-        <!-- TODO: outline in red if no GPS coordinates -->
-        <div class="tour_entry" style="border-left: 4px solid {{color}};">
-            <h4>{{tourGroupName}}</h4>
-
-            <div class="body">
-                {{#each stops}}
-                <strong>{{business.businessName}}</strong> -  {{tourTime}},  {{tourGuide}} <br/>{{/each}}
-            </div>
-        </div>
-    </script>
-
-    <script id="popup_business_detail_template" type="text/x-handlebars-template">
-        <div class="business_detail">
-            <span class="business_title">{{businessName}}</span><br />
-            <div style="width:190px; padding-bottom: 6px; padding-top:6px; margin: 4px auto;">
-
-                <nobr>{{#if businessWebsite}}<a href="{{businessWebsite}}" target="_blank"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}}  <a href="https://www.google.com/maps/dir/Current+Location/{{venueCoordinates.[0]}},{{venueCoordinates.[1]}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
-            </div>
-
-        </div>
-    </script>
-
 </head>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -113,58 +78,6 @@
     <!-- /.container -->
 </nav>
 
-
-<!-- Intro Section -->
-<section id="intro" class="intro-section">
-    <div id="map"></div>
-
-
-    <div id="interaction_container">
-        <div class="selection_container">
-            <ul>
-                <li class="active_tab">Businesses</li>
-                <li>Tours</li>
-            </ul>
-
-            <input id="search" class="search_field" type="text" placeholder="Search businesses..."/>
-
-        </div>
-
-        <div id="entry_container"></div>
-    </div>
-</section>
-
-<section id="sponsors">
-    <a href="http://cvilleinnovation.org/events/tech-tour"><img src="img/tech_tour_logo_footer.svg" height="74" /></a>
-    <a href="http://cvilleinnovation.com/?utm_source=techtour&utm_medium=website&utm_campaign=techtour"><img src="img/cbic_logo_footer.png" height="74" /></a>
-    <a href="http://alleywayconsulting.com/?utm_source=techtour&utm_medium=website&utm_campaign=techtour"><img src="img/alleyway_logo_footer.svg" height="74" /></a>
-
-</section>
-
-<!--&lt;!&ndash; About Section &ndash;&gt;-->
-<!--<section id="about" class="about-section">-->
-    <!--<div class="container">-->
-        <!--<div class="row">-->
-            <!--<div class="col-lg-12">-->
-                <!--<h1>About Section</h1>-->
-
-                <!--Developed by Alleyway Consulting, LLC-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</section>-->
-
-<!--&lt;!&ndash; Contact Section &ndash;&gt;-->
-<!--<section id="contact" class="contact-section">-->
-    <!--<div class="container">-->
-        <!--<div class="row">-->
-            <!--<div class="col-lg-12">-->
-                <!--<h1>Contact Section</h1>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</section>-->
-
 <!-- jQuery -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -182,9 +95,55 @@
 <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src="bower_components/overlapping_marker_spiderfier-leaflet/dist/oms.min.js"></script>
 
-<!-- Custom javascript -->
-<script src="main.js"></script>
 
+
+<section>
+
+
+    <div id="pre_form" style="max-width: 700px; background-color: #efefef; margin: 0 auto; padding: 10px; position: relative;">
+
+        <br>
+
+        <form>
+            <label for="pre_form_name">Name:</label><br/>
+            <input id="pre_form_name" type="text" style="width: 250px"/>
+
+            <br/>
+            <label for="pre_form_address">Address:</label><br/>
+            eg:<br/>
+            <pre>
+    1234 Main St.
+    Suite 9
+    Charlottesville, VA 22903
+                </pre>
+
+            <textarea id="pre_form_address" style="width: 250px; height: 70px">
+one Morton Drive, Suite 201, Charlottesville
+</textarea>
+
+            <br/>
+
+
+            <button id="pre_form_button" type="button">Look up GPS coordinates</button>
+
+
+        </form>
+
+
+        <div id="locate_map_element"></div>
+
+
+
+        <label for="pre_form_gps">GPS Coordinates:</label><br/>
+        <input id="pre_form_gps" type="text" style="width: 260px;"/>
+
+
+    </div>
+
+
+</section>
+
+<script language="JavaScript" src="add_gps.js"></script>
 </body>
 
 </html>

@@ -272,3 +272,9 @@ input[type="color"]:focus,
 .business_title {
     font-weight: 500;
 }
+#locate_map_element {
+    width:96%;
+    height:280px;
+    margin: 20px auto;
+
+}

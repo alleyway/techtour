@@ -192,7 +192,8 @@ function updateDisplay() {
 
                 marker.bindPopup(popupContent, {
                     closeButton: false,
-                    closeOnClick: false
+                    closeOnClick: false,
+                    autoPan: false
                 });
 
                 plainGroupMarkers.addLayer(marker);
@@ -208,7 +209,16 @@ function updateDisplay() {
             var title = $(e.target).find("h4").text();
             plainGroupMarkers.eachLayer(function (marker) {
                 if (marker.options.alt == title) {
-                    marker.openPopup();
+                    map.panTo(marker.getLatLng(), {
+                        animate: true,
+                        duration: .50,
+                        easeLinearity:.6
+                    });
+                    setTimeout(function(){
+                        marker.openPopup();
+                    }, 530);
+
+
                 } else {
                     marker.closePopup();
                 }
