@@ -39,11 +39,6 @@
         <!-- TODO: outline in red if no GPS coordinates -->
         <div class="business_entry">
             <h4>{{businessName}}</h4>
-
-            <!--<div class="body">-->
-                <!--{{venueName}}<br/>-->
-                <!--{{venueAddress}}-->
-            <!--</div>-->
         </div>
     </script>
 
@@ -69,7 +64,9 @@
 
         </div>
     </script>
-
+    <script id="basic_popup_template" type="text/x-handlebars-template">
+        <div class="basic_popup"><span class="business_title">{{businessName}}</span></div>
+    </script>
 </head>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->

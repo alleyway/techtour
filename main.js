@@ -30,6 +30,8 @@ var businessTemplate;
 
 var businessDetailTemplate;
 
+var basicPopupTemplate;
+
 var tourTemplate;
 
 var currentSelected = null;
@@ -193,7 +195,7 @@ function updateDisplay() {
 
             var marker = createBusinessMarker(businessObject);
             if (marker) { //marker may not be created if coords don't exist
-                var popupContent = businessObject.businessName;
+                var popupContent = basicPopupTemplate(businessObject);
 
                 marker.bindPopup(popupContent, {
                     closeButton: false,
@@ -465,6 +467,7 @@ $(document).ready(function () {
     businessTemplate = Handlebars.compile($('#business_template').html());
     tourTemplate = Handlebars.compile($('#tour_template').html());
     businessDetailTemplate = Handlebars.compile($('#popup_business_detail_template').html());
+    basicPopupTemplate = Handlebars.compile($('#basic_popup_template').html());
 
     var businessSpreadsheetCallback = function (error, options, response) {
 
@@ -509,6 +512,13 @@ $(document).ready(function () {
 
     plainGroupMarkers.on('mouseover', function (e) {
         e.layer.openPopup();
+    });
+
+    map.on('popupopen', function() {
+        $('.basic_popup').click(function(e){
+            var businessObject = businessStore[$(e.currentTarget).text()];
+            showDetailMarker(businessObject);
+        });
     });
 
 

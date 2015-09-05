@@ -278,3 +278,7 @@ input[type="color"]:focus,
     margin: 20px auto;
 
 }
+
+.basic_popup {
+    cursor: pointer;
+}
