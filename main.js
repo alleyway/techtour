@@ -68,22 +68,27 @@ $(function () {
 
 $(function () {
     $('.selection_container li').bind('click', function (event) {
-        if ($(event.target).hasClass("active_tab")) return;
         event.preventDefault();
-        $('.selection_container li').toggleClass("active_tab");
         var searchField = $('#search');
         searchField.val("");
         focusIfDesktop();
+        resetZoom();
+
+        currentSelected = null;
+
+        if ($(event.target).hasClass("active_tab")){
+            updateDisplay();
+            return;
+        }
+
+        $('.selection_container li').toggleClass("active_tab");
         businessTabSelected = !businessTabSelected;
         if (businessTabSelected) {
             searchField.attr("placeholder", "Search businesses..")
         } else {
             searchField.attr("placeholder", "Search tours..")
         }
-        resetZoom();
         updateDisplay();
-        currentSelected = null;
-
     });
 });
 
@@ -217,7 +222,6 @@ function updateDisplay() {
                     setTimeout(function(){
                         marker.openPopup();
                     }, 530);
-
 
                 } else {
                     marker.closePopup();
