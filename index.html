@@ -44,7 +44,7 @@
 
     <script id="tour_template" type="text/x-handlebars-template">
         <!-- TODO: outline in red if no GPS coordinates -->
-        <div class="tour_entry" style="border-left: 4px solid {{color}};">
+        <div class="tour_entry" style="border-left-color: {{color}};">
             <h4>{{tourGroupName}}</h4>
 
             <div class="body">
@@ -59,7 +59,7 @@
             <span class="business_title">{{businessName}}</span><br />
             <div style="width:190px; padding-bottom: 6px; padding-top:6px; margin: 4px auto;">
 
-                <nobr>{{#if businessWebsite}}<a href="{{businessWebsite}}" target="_blank"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}}  <a href="https://www.google.com/maps/dir/Current+Location/{{venueCoordinates.[0]}},{{venueCoordinates.[1]}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
+                <nobr>{{#if businessWebsite}}<a href="{{businessWebsite}}" target="_blank"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}}  <a class="directions_link" href="https://www.google.com/maps/dir/Current+Location/{{venueCoordinates.[0]}},{{venueCoordinates.[1]}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
             </div>
 
         </div>
@@ -178,6 +178,7 @@
 <script src="bower_components/sheetrock/dist/sheetrock.min.js"></script>
 <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 <script src="bower_components/overlapping_marker_spiderfier-leaflet/dist/oms.min.js"></script>
+<script src="bower_components/purl/purl.js"></script>
 
 <!-- Custom javascript -->
 <script src="main.js"></script>

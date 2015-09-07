@@ -18,6 +18,8 @@ var clusterGroupMarkers = new L.MarkerClusterGroup({
 
 var plainGroupMarkers = new L.FeatureGroup();
 
+var tourLayers = new L.LayerGroup();
+
 var map;
 
 var oms;
@@ -87,8 +89,10 @@ $(function () {
         $('.selection_container li').toggleClass("active_tab");
         businessTabSelected = !businessTabSelected;
         if (businessTabSelected) {
+            window.location = "#tab=businesses";
             searchField.attr("placeholder", "Search businesses..")
         } else {
+            window.location = "#tab=tours";
             searchField.attr("placeholder", "Search tours..")
         }
         updateDisplay();
@@ -159,8 +163,25 @@ function showDetailMarker(businessObject) {
             }
         });
         setTimeout(function () {
+
+
             marker.openPopup();
+            $('.directions_link').on('click', function(e){
+
+                //if we don't preventDefault, then the link will just degrade to google maps web
+                var venueCoordinates = e.currentTarget.href.substring(49,e.currentTarget.href.length);
+                if(isMobile.iOS()){
+                    e.preventDefault();
+                    window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
+                } else if (isMobile.Android()){
+                    e.preventDefault();
+                    window.location.href = "comgooglemaps-x-callback://?saddr=&daddr=" + venueCoordinates;
+                }
+            });
+
         }, 600);
+
+
 
     }
 
@@ -175,8 +196,11 @@ function updateDisplay() {
     clusterGroupMarkers.clearLayers();
     plainGroupMarkers.clearLayers();
     oms.clearMarkers();
+    tourLayers.clearLayers();
     lastTapped = null;
     entryContainer.empty();
+
+
 
     //based on what's selected, or what's being searched
 
@@ -217,7 +241,7 @@ function updateDisplay() {
 
             if (currentSelected) return;
 
-            var title = $(e.target).find("h4").text();
+            var title = $(e.currentTarget).find("h4").text();
             plainGroupMarkers.eachLayer(function (marker) {
                 if (marker.options.alt == title) {
                     map.panTo(marker.getLatLng(), {
@@ -289,6 +313,7 @@ function updateDisplay() {
                 if (!found) return;
             }
 
+            tourObject.tourLayer = new L.FeatureGroup();
 
             // iterate through objects and add to display
 
@@ -312,6 +337,18 @@ function updateDisplay() {
                         riseOnHover: true,
                         icon: icon
                     });
+
+                    var popup = L.popup({
+                        closeButton: false,
+                        offset: new L.Point(0, -28),
+                        autoPan: false
+                    })
+                        .setLatLng(new L.LatLng(coords[0], coords[1]))
+                        .setContent(basicPopupTemplate(tourStop.business));
+
+                    tourObject.tourLayer.addLayer(popup);
+
+                    tourObject.tourLayer.addLayer(marker);
                     plainGroupMarkers.addLayer(marker);
                     clusterGroupMarkers.addLayer(marker);
                     oms.addMarker(marker);
@@ -321,8 +358,72 @@ function updateDisplay() {
 
         });
 
-    }
+        //on mouseover of tourentry, simply iterate through tourobjects and add/remove what we're hoving over
+        $(".tour_entry").mouseenter(function (e) {
+            e.preventDefault();
+            if (currentSelected) return;
+            var title = $(e.currentTarget).find("h4").text();
+            tourLayers.clearLayers();
+            tourLayers.addLayer(tourStore[title].tourLayer);
 
+        }).click(function(e){
+
+            e.preventDefault();
+            var title = $(e.currentTarget).find("h4").text();
+            lastTapped = title;
+            $(".tour_entry").removeClass("tour_entry_active");
+
+            if (currentSelected && currentSelected == title) {
+                currentSelected = null;
+
+                var bounds = new L.LatLngBounds();
+                $.map(tourStore, function (tourObject) {
+                    var tourLayer = tourObject.tourLayer;
+                    tourLayer.eachLayer(function (layer) {
+                        if (layer instanceof L.Popup || layer instanceof L.Marker){
+                            bounds.extend(layer.getLatLng());
+                        }
+                    });
+                });
+                map.fitBounds(bounds,{
+                    paddingTopLeft:[50, 80]
+                });
+                updateDisplay();
+
+                return;
+            } else {
+                $(e.currentTarget).toggleClass("tour_entry_active");
+                currentSelected = title;
+
+                var tourLayer = tourStore[title].tourLayer;
+                if (!tourLayers.hasLayer(tourLayer)){
+                    tourLayers.clearLayers();
+                    tourLayers.addLayer(tourLayer);
+                }
+
+                var bounds = new L.LatLngBounds();
+                tourLayer.eachLayer(function (layer) {
+                    if (layer instanceof L.Popup || layer instanceof L.Marker){
+                        bounds.extend(layer.getLatLng());
+                    }
+                });
+
+                map.fitBounds(bounds,{
+                    maxZoom: 15,
+                    paddingTopLeft:[50, 80]
+                });
+                //scrolls to top for when we're in mobile
+                $('html, body').stop().animate({
+                    scrollTop: 0
+                }, 1500, 'easeInOutExpo');
+            }
+
+            //var businessObject = businessStore[title];
+            //
+            //showDetailMarker(businessObject);
+
+        });
+    }
 }
 
 function setActiveLayers() {
@@ -381,6 +482,11 @@ function fetchTours() {
                 }
             });
 
+            var currentLocation = $.url(); //current page URL
+            if (currentLocation.fparam("tab") == "tours"){
+                $('.selection_container li')[1].click();
+            }
+
             //finished processing spreadsheet rows
             //setTimeout(updateDisplay, 100);
         }
@@ -396,9 +502,6 @@ function fetchTours() {
 }
 
 $(document).ready(function () {
-
-    //tech tour map id: mlake900.nb1o1aik
-
 
     L.mapbox.accessToken = 'pk.eyJ1IjoibWxha2U5MDAiLCJhIjoiSXV0UEF6dyJ9.8ZrYcafYb59U67LHErUegw';
     map = L.mapbox.map('map', 'mlake900.lae6oebe', {
@@ -464,6 +567,7 @@ $(document).ready(function () {
     });
 
     setActiveLayers();
+    map.addLayer(tourLayers);
 
     businessTemplate = Handlebars.compile($('#business_template').html());
     tourTemplate = Handlebars.compile($('#tour_template').html());

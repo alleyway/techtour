@@ -171,7 +171,6 @@ html {
     border-left: 8px solid #767676;
 }
 
-
 .tour_entry {
     color: #777;
     background-color: white;
@@ -183,8 +182,18 @@ html {
     cursor: pointer;
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #e2e2e2;
+    border-left-style: solid;
+    border-left-width: 2px;
+}
+.tour_entry:hover {
+    background-color: #f7f7f7;
+    border-left-width: 4px;
 }
 
+.tour_entry_active, .tour_entry_active:hover {
+    background-color: #f9f9f9;
+    border-left-width: 8px;
+}
 .intro-section {
     padding-top: 50px;
     text-align: center;
@@ -316,4 +325,8 @@ input[type="color"]:focus,
 .basic_popup:hover {
     color: #0078A8;
     text-decoration: underline;
+}
+
+.directions_link {
+
 }
