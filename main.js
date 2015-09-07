@@ -168,15 +168,11 @@ function showDetailMarker(businessObject) {
             marker.openPopup();
             $('.directions_link').on('click', function(e){
 
-                //if we don't preventDefault, then the link will just degrade to google maps web
+                //using maps.google.com will
                 var venueCoordinates = e.currentTarget.href.substring(49,e.currentTarget.href.length);
                 if(isMobile.iOS()){
                     e.preventDefault();
                     window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
-                } else if (isMobile.Android()){
-                    e.preventDefault();
-                    //window.location.href = "geo:?saddr=&daddr=" + venueCoordinates;
-                    window.location.href = "geo:" + venueCoordinates;
                 }
             });
 
