@@ -175,7 +175,8 @@ function showDetailMarker(businessObject) {
                     window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
                 } else if (isMobile.Android()){
                     e.preventDefault();
-                    window.location.href = "comgooglemaps-x-callback://?saddr=&daddr=" + venueCoordinates;
+                    //window.location.href = "geo:?saddr=&daddr=" + venueCoordinates;
+                    window.location.href = "geo:" + venueCoordinates;
                 }
             });
 
