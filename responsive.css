@@ -151,8 +151,8 @@ html {
     text-align: left;
     padding-left:10px;
     width: 100%;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     border-bottom: 1px solid #e2e2e2;
     border-left: 1px solid #e2e2e2;
     border-right: 1px solid #e2e2e2;
@@ -258,7 +258,9 @@ html {
     margin-right: 10px;
     font-size: larger;
     font-family: 'Open Sans', sans-serif;
-    padding: 4px;
+    padding: 8px;
+    border: 1px solid #cecece;
+    border-radius: 3px;
 }
 
 textarea:focus,
@@ -277,10 +279,9 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
 .uneditable-input:focus {
-    border-color: #fbb038;
+    border: 1px solid #fbb038;
     box-shadow: 0;
     outline: 0 none;
-    border-style:none;
 }
 
 .leaflet-bar a {
