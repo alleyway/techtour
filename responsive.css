@@ -68,6 +68,7 @@ html {
 #entry_container {
     padding-right:0;
     padding-left:0;
+    padding-bottom:20px;
 }
 #interaction_container {
     background-color: #fafafa;

@@ -263,10 +263,11 @@ function updateDisplay() {
             if (currentSelected && currentSelected == title) {
                 currentSelected = null;
                 //remove class
-                resetZoom();
                 updateDisplay();
                 plainGroupMarkers.eachLayer(function (marker) {
                     if (marker.options.alt == title) {
+                        var zoomLevel = 14;
+                        map.setView(marker.getLatLng(), zoomLevel);
                         marker.openPopup();
                     } else {
                         marker.closePopup();
