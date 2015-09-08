@@ -52,14 +52,12 @@ html {
 }
 
 #map {
-    width: 100%;
-    height: 500px;
     position: relative;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
-    border-bottom: 4px solid #808080;
+    border-bottom: 1px solid #808080;
 }
 
 #sponsors {
@@ -83,9 +81,7 @@ html {
     border-top: 1px solid #e2e2e2;
 }
 @media (max-width:1500px){
-    #map {
-        height: 500px;
-    }
+
 }
 
 @media (max-width:800px) {
@@ -96,20 +92,24 @@ html {
 
 @media (min-width:800px){
     #map {
-        padding-right:500px;
-        width:70%;
+        top:50px;
+        position:fixed;
+        left:0;
+        bottom:120px;
+        right:450px;
     }
 
     #sponsors {
-        width:70%;
         position: fixed;
         left:0;
         bottom:0;
-        top:550px;
+        height:120px;
+        right:450px;
+        /*top:550px;*/
     }
 
     #interaction_container {
-        width:30%;
+        width:450px;
         position:fixed;
         top:50px;
         right:0;
@@ -123,7 +123,7 @@ html {
         overflow-x: hidden;
         bottom:0;
         top:190px;
-        width:30%;
+        width:450px;
         right:0;
         position:fixed;
         padding-left: 20px;
@@ -144,8 +144,6 @@ html {
     padding: 4px;
     font-weight: 500;
 }
-
-
 
 .business_entry {
     color: #777;
@@ -257,7 +255,7 @@ html {
     margin-top: 20px;
     width: 90%;
     margin-left:5px;
-    margin-right: 5px;
+    margin-right: 10px;
     font-size: larger;
     font-family: 'Open Sans', sans-serif;
     padding: 4px;
@@ -282,6 +280,7 @@ input[type="color"]:focus,
     border-color: #fbb038;
     box-shadow: 0;
     outline: 0 none;
+    border-style:none;
 }
 
 .leaflet-bar a {
@@ -306,7 +305,7 @@ input[type="color"]:focus,
 }
 
 #sponsors img {
-    margin: 30px 15px 15px;
+    margin: 20px 15px 15px;
 }
 
 .business_title {
