@@ -34,6 +34,8 @@ var businessDetailTemplate;
 
 var basicPopupTemplate;
 
+var basicTourPopupTemplate;
+
 var tourTemplate;
 
 var currentSelected = null;
@@ -321,23 +323,40 @@ function updateDisplay() {
 
                     var latLng = new L.LatLng(coords[0], coords[1]);
 
-                    var marker = L.marker(latLng, {
+                    var tourMarker = L.marker(latLng, {
                         title: tourStop.business.businessName,
                         riseOnHover: true,
                         icon: icon
                     });
-
-                    var popup = L.popup({
+                    var tourPopup = L.popup({
                         closeButton: false,
                         offset: new L.Point(0, -28),
                         autoPan: false
                     })
                         .setLatLng(latLng)
-                        .setContent(basicPopupTemplate(tourStop.business));
+                        .setContent(basicTourPopupTemplate(tourStop.business));
 
-                    tourObject.tourLayer.addLayer(popup);
-                    tourObject.tourLayer.addLayer(marker);
-                    tourLayers.addLayer(tourObject.tourLayer);
+                    var plainMarker = L.marker(latLng, {
+                        title: tourStop.business.businessName,
+                        riseOnHover: true,
+                        icon: icon
+                    });
+
+                    var plainPopup = L.popup({
+                        closeButton: false,
+                        offset: new L.Point(0, -28),
+                        autoPan: false
+                    })
+                        .setLatLng(latLng)
+                        .setContent(basicTourPopupTemplate(tourStop.business));
+
+                    plainMarker.bindPopup(plainPopup);
+
+                    tourObject.tourLayer.addLayer(tourPopup);
+                    tourObject.tourLayer.addLayer(tourMarker);
+
+                    plainGroupMarkers.addLayer(plainMarker);
+                    //tourLayers.addLayer(marker);
 
                     //plainGroupMarkers.addLayer(marker);
                     //clusterGroupMarkers.addLayer(marker);
@@ -372,7 +391,7 @@ function updateDisplay() {
             } else {
                 $(e.currentTarget).toggleClass("tour_entry_active");
                 currentSelected = title;
-
+                plainGroupMarkers.clearLayers();
                 var tourLayer = tourStore[title].tourLayer;
                 if (!tourLayers.hasLayer(tourLayer)){
                     tourLayers.clearLayers();
@@ -387,7 +406,7 @@ function updateDisplay() {
                 });
 
                 map.fitBounds(bounds,{
-                    maxZoom: 16,
+                    maxZoom: 15,
                     paddingTopLeft:[50, 80]
                 });
                 //scrolls to top for when we're in mobile
@@ -395,10 +414,6 @@ function updateDisplay() {
                     scrollTop: 0
                 }, 1500, 'easeInOutExpo');
             }
-
-            //var businessObject = businessStore[title];
-            //
-            //showDetailMarker(businessObject);
 
         });
     }
@@ -550,6 +565,7 @@ $(document).ready(function () {
     tourTemplate = Handlebars.compile($('#tour_template').html());
     businessDetailTemplate = Handlebars.compile($('#popup_business_detail_template').html());
     basicPopupTemplate = Handlebars.compile($('#basic_popup_template').html());
+    basicTourPopupTemplate = Handlebars.compile($('#basic_tour_popup_template').html());
 
     var businessSpreadsheetCallback = function (error, options, response) {
 
@@ -601,6 +617,14 @@ $(document).ready(function () {
         if (e.popup._source != undefined){
             lastTapped = e.popup._source.options.alt;
         }
+
+        $('.basic_tour_popup').click(function(e){
+            var title = $(e.currentTarget).text();
+            var businessObject = businessStore[title];
+            currentSelected = title;
+            tourLayers.clearLayers();
+            showDetailMarker(businessObject);
+        });
 
         $('.basic_popup').click(function(e){
             var title = $(e.currentTarget).text();
