@@ -162,12 +162,9 @@ function showDetailMarker(businessObject) {
             }
         });
         setTimeout(function () {
-
-
             marker.openPopup();
             $('.directions_link').on('click', function(e){
-
-                //using maps.google.com will
+                //using maps.google.com will launch native app
                 var venueCoordinates = e.currentTarget.href.substring(49,e.currentTarget.href.length);
                 if(isMobile.iOS()){
                     e.preventDefault();
@@ -176,11 +173,7 @@ function showDetailMarker(businessObject) {
             });
 
         }, 600);
-
-
-
     }
-
 }
 
 function updateDisplay() {
@@ -195,8 +188,6 @@ function updateDisplay() {
     tourLayers.clearLayers();
     lastTapped = null;
     entryContainer.empty();
-
-
 
     //based on what's selected, or what's being searched
 
@@ -226,7 +217,6 @@ function updateDisplay() {
                     closeOnClick: false,
                     autoPan: true
                 });
-
                 plainGroupMarkers.addLayer(marker);
                 //clusterGroupMarkers.addLayer(marker);
                 oms.addMarker(marker);
@@ -346,11 +336,13 @@ function updateDisplay() {
                         .setContent(basicPopupTemplate(tourStop.business));
 
                     tourObject.tourLayer.addLayer(popup);
-
                     tourObject.tourLayer.addLayer(marker);
-                    plainGroupMarkers.addLayer(marker);
+                    tourLayers.addLayer(tourObject.tourLayer);
+
+                    //plainGroupMarkers.addLayer(marker);
                     //clusterGroupMarkers.addLayer(marker);
-                    oms.addMarker(marker);
+                    //oms.addMarker(marker);
+
                     bounds.extend(latLng);
                 }
             });
@@ -376,9 +368,7 @@ function updateDisplay() {
 
             if (currentSelected && currentSelected == title) {
                 currentSelected = null;
-
                 updateDisplay();
-
             } else {
                 $(e.currentTarget).toggleClass("tour_entry_active");
                 currentSelected = title;
@@ -397,7 +387,7 @@ function updateDisplay() {
                 });
 
                 map.fitBounds(bounds,{
-                    maxZoom: 15,
+                    maxZoom: 16,
                     paddingTopLeft:[50, 80]
                 });
                 //scrolls to top for when we're in mobile
@@ -606,7 +596,12 @@ $(document).ready(function () {
         e.layer.openPopup();
     });
 
-    map.on('popupopen', function() {
+    map.on('popupopen', function(e) {
+
+        if (e.popup._source != undefined){
+            lastTapped = e.popup._source.options.alt;
+        }
+
         $('.basic_popup').click(function(e){
             var title = $(e.currentTarget).text();
             var businessObject = businessStore[title];
