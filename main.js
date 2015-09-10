@@ -9,12 +9,12 @@ var tourSpreadsheet =
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-var clusterGroupMarkers = new L.MarkerClusterGroup({
-    showCoverageOnHover: false,
-    animateAddingMarkers: false,
-    maxClusterRadius: 35,
-    disableClusteringAtZoom: 13
-});
+//var clusterGroupMarkers = new L.MarkerClusterGroup({
+//    showCoverageOnHover: false,
+//    animateAddingMarkers: false,
+//    maxClusterRadius: 35,
+//    disableClusteringAtZoom: 13
+//});
 
 var plainGroupMarkers = new L.FeatureGroup();
 
@@ -76,26 +76,26 @@ $(function () {
         event.preventDefault();
         var searchField = $('#search');
         searchField.val("");
-        focusIfDesktop();
-        resetZoom();
-        map.setView(center);
+
         currentSelected = null;
 
-        if ($(event.target).hasClass("active_tab")){
-            updateDisplay();
-            return;
+        if (!$(event.target).hasClass("active_tab")){
+            $('.selection_container li').toggleClass("active_tab");
         }
+        businessTabSelected = $(event.currentTarget)[0].innerHTML == "Businesses";
 
-        $('.selection_container li').toggleClass("active_tab");
-        businessTabSelected = !businessTabSelected;
-        if (businessTabSelected) {
+
+        if (businessTabSelected){
             window.location = "#tab=businesses";
-            searchField.attr("placeholder", "Search businesses..")
+            searchField.attr("placeholder", "Search businesses..");
+            map.setView(center, getDefaultZoom());
         } else {
             window.location = "#tab=tours";
-            searchField.attr("placeholder", "Search tours..")
+            searchField.attr("placeholder", "Search tours..");
         }
         updateDisplay();
+        focusIfDesktop();
+
     });
 });
 
@@ -105,13 +105,12 @@ $(function () {
     });
 });
 
-function resetZoom() {
-
+function getDefaultZoom() {
     var zoomLevel = 14;
     if ($(window).width() < 550) zoomLevel = 12;
-
-    map.setZoom(zoomLevel);
+    return zoomLevel;
 }
+
 
 function createBusinessMarker(businessObject) {
 
@@ -137,7 +136,7 @@ function createBusinessMarker(businessObject) {
 }
 
 function showDetailMarker(businessObject) {
-    clusterGroupMarkers.clearLayers();
+    //clusterGroupMarkers.clearLayers();
     plainGroupMarkers.clearLayers();
     oms.clearMarkers();
 
@@ -151,7 +150,7 @@ function showDetailMarker(businessObject) {
         });
 
         plainGroupMarkers.addLayer(marker);
-        clusterGroupMarkers.addLayer(marker);
+        //clusterGroupMarkers.addLayer(marker);
         oms.addMarker(marker);
 
         //show viewer higher up to accommodate popup
@@ -185,12 +184,12 @@ function showDetailMarker(businessObject) {
 }
 
 function updateDisplay() {
-
+    console.log("updateDisplay();");
     var entryContainer = $('#entry_container');
 
     //reset display
 
-    clusterGroupMarkers.clearLayers();
+    //clusterGroupMarkers.clearLayers();
     plainGroupMarkers.clearLayers();
     oms.clearMarkers();
     tourLayers.clearLayers();
@@ -225,11 +224,11 @@ function updateDisplay() {
                 marker.bindPopup(popupContent, {
                     closeButton: false,
                     closeOnClick: false,
-                    autoPan: false
+                    autoPan: true
                 });
 
                 plainGroupMarkers.addLayer(marker);
-                clusterGroupMarkers.addLayer(marker);
+                //clusterGroupMarkers.addLayer(marker);
                 oms.addMarker(marker);
             }
         });
@@ -291,7 +290,7 @@ function updateDisplay() {
         });
 
     } else {
-
+        var bounds = new L.LatLngBounds();
         $.map(tourStore, function (tourObject) {
 
             if (searchValue.length > 0) {
@@ -330,7 +329,9 @@ function updateDisplay() {
                         'marker-color': tourObject.color
                     });
 
-                    var marker = L.marker(new L.LatLng(coords[0], coords[1]), {
+                    var latLng = new L.LatLng(coords[0], coords[1]);
+
+                    var marker = L.marker(latLng, {
                         title: tourStop.business.businessName,
                         riseOnHover: true,
                         icon: icon
@@ -341,19 +342,21 @@ function updateDisplay() {
                         offset: new L.Point(0, -28),
                         autoPan: false
                     })
-                        .setLatLng(new L.LatLng(coords[0], coords[1]))
+                        .setLatLng(latLng)
                         .setContent(basicPopupTemplate(tourStop.business));
 
                     tourObject.tourLayer.addLayer(popup);
 
                     tourObject.tourLayer.addLayer(marker);
                     plainGroupMarkers.addLayer(marker);
-                    clusterGroupMarkers.addLayer(marker);
+                    //clusterGroupMarkers.addLayer(marker);
                     oms.addMarker(marker);
+                    bounds.extend(latLng);
                 }
-
             });
-
+        });
+        map.fitBounds(bounds,{
+            paddingTopLeft:[50, 80]
         });
 
         //on mouseover of tourentry, simply iterate through tourobjects and add/remove what we're hoving over
@@ -374,21 +377,8 @@ function updateDisplay() {
             if (currentSelected && currentSelected == title) {
                 currentSelected = null;
 
-                var bounds = new L.LatLngBounds();
-                $.map(tourStore, function (tourObject) {
-                    var tourLayer = tourObject.tourLayer;
-                    tourLayer.eachLayer(function (layer) {
-                        if (layer instanceof L.Popup || layer instanceof L.Marker){
-                            bounds.extend(layer.getLatLng());
-                        }
-                    });
-                });
-                map.fitBounds(bounds,{
-                    paddingTopLeft:[50, 80]
-                });
                 updateDisplay();
 
-                return;
             } else {
                 $(e.currentTarget).toggleClass("tour_entry_active");
                 currentSelected = title;
@@ -425,12 +415,12 @@ function updateDisplay() {
 }
 
 function setActiveLayers() {
-    if (map.getZoom() < 9 && map.hasLayer(clusterGroupMarkers)) {
-        map.removeLayer(clusterGroupMarkers);
-    }
-    if (map.getZoom() >= 9 && map.hasLayer(clusterGroupMarkers) == false) {
-        map.addLayer(clusterGroupMarkers);
-    }
+    //if (map.getZoom() < 9 && map.hasLayer(clusterGroupMarkers)) {
+    //    map.removeLayer(clusterGroupMarkers);
+    //}
+    //if (map.getZoom() >= 9 && map.hasLayer(clusterGroupMarkers) == false) {
+    //    map.addLayer(clusterGroupMarkers);
+    //}
 }
 function focusIfDesktop() {
     if (!isMobile.any()) $('#search').focus();
@@ -508,9 +498,7 @@ $(document).ready(function () {
 
     });
 
-    map.setView(center);
-
-    resetZoom();
+    map.setView(center, getDefaultZoom());
 
     //map.dragging.disable();
     //map.touchZoom.disable();
@@ -532,7 +520,7 @@ $(document).ready(function () {
         if (currentSelected){
             //save marker to be opened after zooming out
             currentSelected = null;
-            resetZoom();
+            map.setZoom(getDefaultZoom());
             updateDisplay();
             setTimeout(function(){
                 plainGroupMarkers.eachLayer(function (marker) {
@@ -565,6 +553,7 @@ $(document).ready(function () {
     });
 
     setActiveLayers();
+    map.addLayer(plainGroupMarkers);
     map.addLayer(tourLayers);
 
     businessTemplate = Handlebars.compile($('#business_template').html());
