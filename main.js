@@ -217,7 +217,8 @@ function updateDisplay() {
                 marker.bindPopup(popupContent, {
                     closeButton: false,
                     closeOnClick: false,
-                    autoPan: true
+                    autoPan: true,
+                    offset: new L.Point(0, -30)
                 });
                 plainGroupMarkers.addLayer(marker);
                 //clusterGroupMarkers.addLayer(marker);
@@ -228,6 +229,8 @@ function updateDisplay() {
         $(".business_entry").mouseenter(function (e) {
 
             if (currentSelected) return;
+
+            if (isMobile.any()) return; // mouseenter on mobile occurs before "click"
 
             var title = $(e.currentTarget).find("h4").text();
             plainGroupMarkers.eachLayer(function (marker) {
@@ -323,34 +326,38 @@ function updateDisplay() {
 
                     var latLng = new L.LatLng(coords[0], coords[1]);
 
+                    //markers & popups that are shown separately
                     var tourMarker = L.marker(latLng, {
-                        title: tourStop.business.businessName,
+                        alt: tourStop.business.businessName,
                         riseOnHover: true,
                         icon: icon
                     });
                     var tourPopup = L.popup({
                         closeButton: false,
-                        offset: new L.Point(0, -28),
-                        autoPan: false
+                        offset: new L.Point(0, -30),
+                        autoPan: true
                     })
                         .setLatLng(latLng)
                         .setContent(basicTourPopupTemplate(tourStop.business));
 
+                    //initial set of markers which can be explored
                     var plainMarker = L.marker(latLng, {
-                        title: tourStop.business.businessName,
+                        alt: tourStop.business.businessName,
                         riseOnHover: true,
                         icon: icon
                     });
 
                     var plainPopup = L.popup({
                         closeButton: false,
-                        offset: new L.Point(0, -28),
-                        autoPan: false
+                        autoPan: false,
+                        closeOnClick: true
                     })
                         .setLatLng(latLng)
                         .setContent(basicTourPopupTemplate(tourStop.business));
 
-                    plainMarker.bindPopup(plainPopup);
+                    plainMarker.bindPopup(plainPopup, {
+                        offset: new L.Point(0, -30)
+                    });
 
                     tourObject.tourLayer.addLayer(tourPopup);
                     tourObject.tourLayer.addLayer(tourMarker);
@@ -367,13 +374,14 @@ function updateDisplay() {
             });
         });
         map.fitBounds(bounds,{
-            paddingTopLeft:[50, 80]
+            paddingTopLeft:[15, 10],
+            paddingBottomRight:[-50, -50]
         });
 
         //on mouseover of tourentry, simply iterate through tourobjects and add/remove what we're hoving over
         $(".tour_entry").mouseenter(function (e) {
-            e.preventDefault();
             if (currentSelected) return;
+            if (isMobile.any()) return; // mouseenter on mobile occurs before "click"
             var title = $(e.currentTarget).find("h4").text();
             tourLayers.clearLayers();
             tourLayers.addLayer(tourStore[title].tourLayer);
@@ -407,7 +415,8 @@ function updateDisplay() {
 
                 map.fitBounds(bounds,{
                     maxZoom: 15,
-                    paddingTopLeft:[50, 80]
+                    paddingTopLeft:[50, 75],
+                    paddingBottomRight:[50, 50]
                 });
                 //scrolls to top for when we're in mobile
                 $('html, body').stop().animate({
@@ -564,7 +573,7 @@ $(document).ready(function () {
     businessTemplate = Handlebars.compile($('#business_template').html());
     tourTemplate = Handlebars.compile($('#tour_template').html());
     businessDetailTemplate = Handlebars.compile($('#popup_business_detail_template').html());
-    basicPopupTemplate = Handlebars.compile($('#basic_popup_template').html());
+    basicPopupTemplate = Handlebars.compile($('#basic_business_popup_template').html());
     basicTourPopupTemplate = Handlebars.compile($('#basic_tour_popup_template').html());
 
     var businessSpreadsheetCallback = function (error, options, response) {
@@ -626,14 +635,13 @@ $(document).ready(function () {
             showDetailMarker(businessObject);
         });
 
-        $('.basic_popup').click(function(e){
+        $('.basic_business_popup').click(function(e){
             var title = $(e.currentTarget).text();
             var businessObject = businessStore[title];
             currentSelected = title;
             showDetailMarker(businessObject);
         });
     });
-
 
 });
 

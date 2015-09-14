@@ -320,10 +320,10 @@ input[type="color"]:focus,
 
 }
 
-.basic_popup {
+.basic_business_popup {
     cursor: pointer;
 }
-.basic_popup:hover {
+.basic_business_popup:hover {
     color: #0078A8;
     text-decoration: underline;
 }
