@@ -336,7 +336,7 @@ function updateDisplay() {
                     var tourPopup = L.popup({
                         closeButton: false,
                         offset: new L.Point(0, -30),
-                        autoPan: true
+                        autoPan: false
                     })
                         .setLatLng(latLng)
                         .setContent(basicTourPopupTemplate(tourStop));
@@ -398,7 +398,6 @@ function updateDisplay() {
             }
         ).click(function(e){
 
-            e.preventDefault();
             var title = $(e.currentTarget).find("h4").text();
             lastTapped = title;
             $(".tour_entry").removeClass("tour_entry_active");
@@ -407,7 +406,7 @@ function updateDisplay() {
                 currentSelected = null;
                 updateDisplay();
             } else {
-                $(e.currentTarget).toggleClass("tour_entry_active");
+                $(this).toggleClass("tour_entry_active");
                 currentSelected = title;
                 plainGroupMarkers.clearLayers();
                 var tourLayer = tourStore[title].tourLayer;
@@ -425,11 +424,14 @@ function updateDisplay() {
 
                 $(".tour_time").show();
 
-                map.fitBounds(bounds,{
-                    maxZoom: 15,
-                    paddingTopLeft:[50, 75],
-                    paddingBottomRight:[50, 50]
-                });
+                setTimeout(function(){
+                    map.fitBounds(bounds,{
+                        maxZoom: 15,
+                        paddingTopLeft:[50, 75],
+                        paddingBottomRight:[50, 50]
+                    });
+                }, 120);
+
                 //scrolls to top for when we're in mobile
                 $('html, body').stop().animate({
                     scrollTop: 0
