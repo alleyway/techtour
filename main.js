@@ -338,7 +338,7 @@ function updateDisplay() {
                         autoPan: true
                     })
                         .setLatLng(latLng)
-                        .setContent(basicTourPopupTemplate(tourStop.business));
+                        .setContent(basicTourPopupTemplate(tourStop));
 
                     //initial set of markers which can be explored
                     var plainMarker = L.marker(latLng, {
@@ -353,7 +353,7 @@ function updateDisplay() {
                         closeOnClick: true
                     })
                         .setLatLng(latLng)
-                        .setContent(basicTourPopupTemplate(tourStop.business));
+                        .setContent(basicTourPopupTemplate(tourStop));
 
                     plainMarker.bindPopup(plainPopup, {
                         offset: new L.Point(0, -30)
@@ -421,6 +421,8 @@ function updateDisplay() {
                         bounds.extend(layer.getLatLng());
                     }
                 });
+
+                $(".tour_time").show();
 
                 map.fitBounds(bounds,{
                     maxZoom: 15,
@@ -640,10 +642,6 @@ $(document).ready(function () {
     });
 
     map.on('popupopen', function(e) {
-
-        //if (e.popup._source != undefined){
-        //    console.log(e.popup._source.options.alt);
-        //}
 
         $('.basic_tour_popup').click(function(e){
             var title = $(e.currentTarget).text();

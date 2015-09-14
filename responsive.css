@@ -329,6 +329,7 @@ input[type="color"]:focus,
 }
 .basic_tour_popup {
     cursor: pointer;
+    line-height: 14px;
 }
 .basic_tour_popup:hover {
     color: #0078A8;
@@ -337,4 +338,10 @@ input[type="color"]:focus,
 
 .directions_link {
 
+}
+
+.tour_time {
+    display: none;
+    font-size: smaller;
+    font-weight: 400;
 }
