@@ -644,7 +644,7 @@ $(document).ready(function () {
     map.on('popupopen', function(e) {
 
         $('.basic_tour_popup').click(function(e){
-            var title = $(e.currentTarget).text();
+            var title = $(this).find(".business_title").text();
             var businessObject = businessStore[title];
             currentSelected = title;
             tourLayers.clearLayers();
@@ -652,7 +652,7 @@ $(document).ready(function () {
         });
 
         $('.basic_business_popup').click(function(e){
-            var title = $(e.currentTarget).text();
+            var title = $(this).find(".business_title").text();
             var businessObject = businessStore[title];
             currentSelected = title;
             showDetailMarker(businessObject);
