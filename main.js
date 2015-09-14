@@ -148,7 +148,8 @@ function showDetailMarker(businessObject) {
 
         marker.bindPopup(popupContent, {
             closeButton: false,
-            minWidth: 60
+            minWidth: 60,
+            offset: new L.Point(0, -30)
         });
 
         plainGroupMarkers.addLayer(marker);
