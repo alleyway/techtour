@@ -345,3 +345,10 @@ input[type="color"]:focus,
     font-size: smaller;
     font-weight: 400;
 }
+
+
+
+.leaflet-container img.leaflet-marker-icon {
+    /* fix for tap area below icon being excessive */
+    clip: rect(auto auto 60px auto);
+}
