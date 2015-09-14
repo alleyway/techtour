@@ -379,14 +379,23 @@ function updateDisplay() {
         });
 
         //on mouseover of tourentry, simply iterate through tourobjects and add/remove what we're hoving over
-        $(".tour_entry").mouseenter(function (e) {
+        $(".tour_entry[name]").mouseenter(function (e) {
             if (currentSelected) return;
             if (isMobile.any()) return; // mouseenter on mobile occurs before "click"
             var title = $(e.currentTarget).find("h4").text();
             tourLayers.clearLayers();
             tourLayers.addLayer(tourStore[title].tourLayer);
 
-        }).click(function(e){
+        }).mouseleave(function (e){
+                var title = $(this).find("h4").text();
+                if (currentSelected != title){
+                    var layer = tourStore[title].tourLayer;
+                    if (tourLayers.hasLayer){
+                        tourLayers.removeLayer(layer);
+                    }
+                }
+            }
+        ).click(function(e){
 
             e.preventDefault();
             var title = $(e.currentTarget).find("h4").text();
@@ -625,6 +634,9 @@ $(document).ready(function () {
 
     plainGroupMarkers.on('mouseover', function (e) {
         e.layer.openPopup();
+    });
+    plainGroupMarkers.on('mouseout', function (e) {
+        e.layer.closePopup();
     });
 
     map.on('popupopen', function(e) {
