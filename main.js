@@ -522,10 +522,16 @@ $(document).ready(function () {
         keepSpiderfied: true
     });
 
+    oms.addListener('spiderfy', function(markers){
+        var lastMarker = markers[markers.length - 1];
+        lastTapped = lastMarker.options.alt;
+        lastMarker.openPopup();
+    });
+
     oms.addListener('click', function (marker) {
 
         if (isMobile.any() && lastTapped != marker.options.alt) {
-            marker.openPopup();
+            //marker.openPopup();
             lastTapped = marker.options.alt;
             return;
         }
@@ -623,9 +629,9 @@ $(document).ready(function () {
 
     map.on('popupopen', function(e) {
 
-        if (e.popup._source != undefined){
-            lastTapped = e.popup._source.options.alt;
-        }
+        //if (e.popup._source != undefined){
+        //    console.log(e.popup._source.options.alt);
+        //}
 
         $('.basic_tour_popup').click(function(e){
             var title = $(e.currentTarget).text();
