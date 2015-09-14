@@ -40,6 +40,8 @@ var tourTemplate;
 
 var currentSelected = null;
 
+var hoverTimer = null;
+
 var lastTapped = null;
 
 var businessTabSelected = true;
@@ -227,12 +229,12 @@ function updateDisplay() {
             }
         });
 
-        $(".business_entry").mouseenter(function (e) {
+        $(".business_entry[name]").mouseenter(function (e) {
 
             if (currentSelected) return;
 
-            if (isMobile.any()) return; // mouseenter on mobile occurs before "click"
-
+            if (isMobile.any()) return; // mouseenter on mobile fires before "click", even though there's no mouse
+            clearTimeout(hoverTimer);
             var title = $(e.currentTarget).find("h4").text();
             plainGroupMarkers.eachLayer(function (marker) {
                 if (marker.options.alt == title) {
@@ -241,7 +243,8 @@ function updateDisplay() {
                         duration: .50,
                         easeLinearity:.6
                     });
-                    setTimeout(function(){
+
+                    hoverTimer = setTimeout(function(){
                         marker.openPopup();
                     }, 530);
 
@@ -278,11 +281,8 @@ function updateDisplay() {
                     scrollTop: 0
                 }, 1500, 'easeInOutExpo');
             }
-
             var businessObject = businessStore[title];
-
             showDetailMarker(businessObject);
-
         });
 
     } else {
