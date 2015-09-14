@@ -508,7 +508,7 @@ function fetchTours() {
 
     $('#tour_container').sheetrock({
         url: tourSpreadsheet,
-        sql: "select *",
+        sql: "select * ORDER BY C",
         callback: tourSpreadsheetCallback,
         reset: true
     });
@@ -573,8 +573,6 @@ $(document).ready(function () {
             var businessObject = businessStore[marker.options.alt];
             showDetailMarker(businessObject);
         }
-
-
     });
 
     map.scrollWheelZoom.disable();
