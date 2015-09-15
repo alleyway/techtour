@@ -58,7 +58,9 @@
         <div class="business_detail">
             <span class="business_title">{{businessName}}</span><br />
             <div style="width:190px; padding-bottom: 6px; padding-top:6px; margin: 4px auto;">
-
+                <span style="font-size: smaller"><span style="color:#333;">Venue Address:</span><br/><strong>
+                {{#if venueName}}{{venueName}}<br/>{{/if}}
+                {{#if venueAddress}}{{venueAddress}}<br/>{{/if}}</strong></span><br/>
                 <nobr>{{#if businessWebsite}}<a href="{{businessWebsite}}" target="_blank"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}}  <a class="directions_link" href="http://maps.google.com/?saddr=Current%20Location&daddr={{venueCoordinates.[0]}},{{venueCoordinates.[1]}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
             </div>
 

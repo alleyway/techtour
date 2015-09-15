@@ -81,6 +81,12 @@ html {
 .tour_entry:first-child {
     border-top: 1px solid #e2e2e2;
 }
+
+.intro-section {
+    padding-top: 50px;
+    text-align: center;
+    background: #fff;
+}
 @media (max-width:1500px){
 
 }
@@ -88,6 +94,27 @@ html {
 @media (max-width:800px) {
     #map {
         height: 300px;
+    }
+}
+
+@media print {
+    .intro-section {
+        padding-top:0;
+    }
+    .leaflet-control{
+        visibility: hidden;
+    }
+    #map {
+        height: 400px;
+        top:10px;
+        position:relative;
+    }
+    #interaction_container {
+        display: none;
+
+    }
+    a[href]:after {
+        content: none;
     }
 }
 
@@ -193,11 +220,6 @@ html {
     background-color: #f9f9f9;
     border-left-width: 8px;
 }
-.intro-section {
-    padding-top: 50px;
-    text-align: center;
-    background: #fff;
-}
 
 .about-section {
     height: 100%;
@@ -299,6 +321,7 @@ input[type="color"]:focus,
 .business_detail {
     text-align: center;
     font-size: larger;
+    font-family: 'Open Sans', sans-serif;
 }
 .business_detail a {
     padding: 5px;
@@ -311,7 +334,7 @@ input[type="color"]:focus,
 }
 
 .business_title {
-    font-weight: 500;
+    font-weight: 600;
 }
 #locate_map_element {
     width:96%;
@@ -322,6 +345,7 @@ input[type="color"]:focus,
 
 .basic_business_popup {
     cursor: pointer;
+    font-family: 'Open Sans', sans-serif;
 }
 .basic_business_popup:hover {
     color: #0078A8;
@@ -330,6 +354,7 @@ input[type="color"]:focus,
 .basic_tour_popup {
     cursor: pointer;
     line-height: 14px;
+    font-family: 'Open Sans', sans-serif;
 }
 .basic_tour_popup .business_title:hover {
     color: #0078A8;
@@ -346,9 +371,13 @@ input[type="color"]:focus,
     font-weight: 400;
 }
 
-
-
 .leaflet-container img.leaflet-marker-icon {
     /* fix for tap area below icon being excessive */
     clip: rect(auto auto 60px auto);
+}
+
+@media print {
+
+
+
 }

@@ -360,15 +360,17 @@ function updateDisplay() {
                         offset: new L.Point(0, -30)
                     });
 
+                    plainMarker.on("click", function(e){
+                        currentSelected = e.target.options.alt;
+                        lastTapped = currentSelected;
+                        var businessObject = businessStore[currentSelected];
+                        showDetailMarker(businessObject);
+                    });
+
                     tourObject.tourLayer.addLayer(tourPopup);
                     tourObject.tourLayer.addLayer(tourMarker);
 
                     plainGroupMarkers.addLayer(plainMarker);
-                    //tourLayers.addLayer(marker);
-
-                    //plainGroupMarkers.addLayer(marker);
-                    //clusterGroupMarkers.addLayer(marker);
-                    //oms.addMarker(marker);
 
                     bounds.extend(latLng);
                 }
@@ -609,12 +611,23 @@ $(document).ready(function () {
                 } else {
                     website = null;
                 }
+                var venueAddress = row.cells["TourAddress"];
 
-                businessStore[row.cells["Name"]] = {
-                    "businessName": row.cells["Name"],
+                var cvilleIndex = venueAddress.toLowerCase().indexOf("charlottesville");
+                if (cvilleIndex > -1){
+                    venueAddress = venueAddress.substring(0, cvilleIndex).replace(/^\s*,\s*|\s*,\s*$/g,'');
+                }
+
+                var venueName = row.cells["TourVenue"];
+
+                var businessName = row.cells["Name"];
+                if (businessName == venueName) venueName = null;
+
+                businessStore[businessName] = {
+                    "businessName": businessName,
                     "businessWebsite": website,
-                    "venueName": row.cells["TourVenue"],
-                    "venueAddress": row.cells["TourAddress"],
+                    "venueName": venueName,
+                    "venueAddress": venueAddress,
                     "venueCoordinates": row.cells["TourGPS"].split(",")
                 };
             });
