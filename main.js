@@ -345,6 +345,7 @@ function updateDisplay() {
                     var plainMarker = L.marker(latLng, {
                         alt: tourStop.business.businessName,
                         riseOnHover: true,
+                        zIndexOffset: -300,
                         icon: icon
                     });
 
@@ -365,6 +366,12 @@ function updateDisplay() {
                         lastTapped = currentSelected;
                         var businessObject = businessStore[currentSelected];
                         showDetailMarker(businessObject);
+                    });
+
+                    tourMarker.on("click", function(e){
+                        //TODO: fully implement
+                        $(".popup_subdetails").show();
+
                     });
 
                     tourObject.tourLayer.addLayer(tourPopup);
@@ -388,6 +395,8 @@ function updateDisplay() {
             var title = $(e.currentTarget).find("h4").text();
             tourLayers.clearLayers();
             tourLayers.addLayer(tourStore[title].tourLayer);
+            plainGroupMarkers.bringToBack();
+            tourStore[title].tourLayer.bringToFront();
 
         }).mouseleave(function (e){
                 var title = $(this).find("h4").text();
@@ -652,7 +661,7 @@ $(document).ready(function () {
         e.layer.openPopup();
     });
     plainGroupMarkers.on('mouseout', function (e) {
-        e.layer.closePopup();
+        if (!currentSelected) e.layer.closePopup();
     });
 
     map.on('popupopen', function(e) {

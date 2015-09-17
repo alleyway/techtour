@@ -63,14 +63,25 @@
                 {{#if venueAddress}}{{venueAddress}}<br/>{{/if}}</strong></span><br/>
                 <nobr>{{#if businessWebsite}}<a href="{{businessWebsite}}" target="_blank"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}}  <a class="directions_link" href="http://maps.google.com/?saddr=Current%20Location&daddr={{venueCoordinates.[0]}},{{venueCoordinates.[1]}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
             </div>
-
         </div>
     </script>
     <script id="basic_business_popup_template" type="text/x-handlebars-template">
         <div class="basic_business_popup"><span class="business_title">{{businessName}}</span></div>
     </script>
     <script id="basic_tour_popup_template" type="text/x-handlebars-template">
-        <div class="basic_tour_popup"><span class="tour_time">{{tourTime}}<br/></span><span class="business_title">{{business.businessName}}</span></div>
+        <div class="basic_tour_popup"><span class="tour_time">{{tourTime}}<br/></span><span class="business_title">{{business.businessName}}</span><br/>
+
+            <div class="popup_subdetails"><span style="color:#333;">Venue Address:</span><br/><strong>
+                {{#if business.venueName}}{{business.venueName}}<br/>{{/if}}
+                {{#if business.venueAddress}}{{business.venueAddress}}<br/>{{/if}}</strong><br/>
+                <nobr>{{#if business.businessWebsite}}<a href="{{business.businessWebsite}}" target="_blank"><span
+                        class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}} <a class="directions_link"
+                                                                                               href="http://maps.google.com/?saddr=Current%20Location&daddr={{business.venueCoordinates.[0]}},{{business.venueCoordinates.[1]}}"
+                                                                                               target="_blank"><span
+                        class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
+                &nbsp;<br/>
+            </div>
+        </div>
     </script>
 </head>
 

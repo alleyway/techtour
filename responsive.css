@@ -329,6 +329,12 @@ input[type="color"]:focus,
     border: 1px solid lightgray;
 }
 
+.basic_tour_popup a {
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid lightgray;
+}
+
 #sponsors img {
     margin: 20px 15px 15px;
 }
@@ -376,8 +382,8 @@ input[type="color"]:focus,
     clip: rect(auto auto 60px auto);
 }
 
-@media print {
-
-
-
+.popup_subdetails {
+    display:none;
+    font-size: smaller;
+    visibility: hidden;
 }
