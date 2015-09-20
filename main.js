@@ -139,6 +139,17 @@ function createBusinessMarker(businessObject) {
     }
 }
 
+function showTourStopMarker(businessObject) {
+    tourLayers.eachLayer(function (tourLayer) {
+        tourLayer.eachLayer(function(layer){
+            if (layer instanceof L.Popup ){
+                tourLayers.removeLayer(layer);
+            }
+        });
+    });
+    showDetailMarker(businessObject);
+}
+
 function showDetailMarker(businessObject) {
     //clusterGroupMarkers.clearLayers();
     plainGroupMarkers.clearLayers();
@@ -168,14 +179,14 @@ function showDetailMarker(businessObject) {
         });
         setTimeout(function () {
             marker.openPopup();
-            $('.directions_link').on('click', function(e){
-                //using maps.google.com will launch native app
-                var venueCoordinates = e.currentTarget.href.substring(49,e.currentTarget.href.length);
-                //if(isMobile.iOS()){
-                //    e.preventDefault();
-                //    window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
-                //}
-            });
+            //$('.directions_link').on('click', function(e){
+            //    //using maps.google.com will launch native app
+            //    var venueCoordinates = e.currentTarget.href.substring(49,e.currentTarget.href.length);
+            //    //if(isMobile.iOS()){
+            //    //    e.preventDefault();
+            //    //    window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
+            //    //}
+            //});
 
         }, 600);
     }
@@ -369,8 +380,10 @@ function updateDisplay() {
                     });
 
                     tourMarker.on("click", function(e){
-                        //TODO: fully implement
-                        $(".popup_subdetails").show();
+
+                        lastTapped = e.target.options.alt;
+                        var businessObject = businessStore[lastTapped];
+                        showTourStopMarker(businessObject);
 
                     });
 
@@ -668,10 +681,9 @@ $(document).ready(function () {
 
         $('.basic_tour_popup').click(function(e){
             var title = $(this).find(".business_title").text();
+            //currentSelected = title;
             var businessObject = businessStore[title];
-            currentSelected = title;
-            tourLayers.clearLayers();
-            showDetailMarker(businessObject);
+            showTourStopMarker(businessObject);
         });
 
         $('.basic_business_popup').click(function(e){

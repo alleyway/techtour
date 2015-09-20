@@ -41,6 +41,9 @@ html {
         -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
         transition: background .5s ease-in-out,padding .5s ease-in-out;
     }
+    .navbar-nav {
+        display:none;
+    }
 
     .top-nav-collapse {
         padding: 0;
@@ -123,7 +126,7 @@ html {
         top:50px;
         position:fixed;
         left:0;
-        bottom:120px;
+        bottom:110px;
         right:450px;
     }
 
@@ -131,7 +134,7 @@ html {
         position: fixed;
         left:0;
         bottom:0;
-        height:120px;
+        height:110px;
         right:450px;
         /*top:550px;*/
     }
@@ -385,5 +388,4 @@ input[type="color"]:focus,
 .popup_subdetails {
     display:none;
     font-size: smaller;
-    visibility: hidden;
 }
