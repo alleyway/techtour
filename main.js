@@ -485,6 +485,7 @@ function fetchTours() {
 
         if (error) {
             console.log(error);
+            if(!alert('Network connectivity error. Press OK to refresh.')){window.location.reload();}
         } else {
 
             var count = -1;
@@ -621,9 +622,12 @@ $(document).ready(function () {
     var businessSpreadsheetCallback = function (error, options, response) {
 
         if (error) {
+            if(!alert('Network connectivity error. Press OK to refresh.')){window.location.reload();}
             console.log(error);
         } else {
+
             response.rows.forEach(function (row) {
+
                 //save as structured data
 
                 var website = row.cells["Website"];

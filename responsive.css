@@ -389,3 +389,7 @@ input[type="color"]:focus,
     display:none;
     font-size: smaller;
 }
+.popup_detail_button {
+    display:inline-block;
+    width:100px;
+}
