@@ -143,7 +143,7 @@ function showTourStopMarker(businessObject) {
     tourLayers.eachLayer(function (tourLayer) {
         tourLayer.eachLayer(function(layer){
             if (layer instanceof L.Popup ){
-                tourLayers.removeLayer(layer);
+                tourLayer.removeLayer(layer);
             }
         });
     });
