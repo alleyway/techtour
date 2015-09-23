@@ -646,7 +646,7 @@ $(document).ready(function () {
 
                 var venueName = row.cells["TourVenue"];
 
-                var businessName = row.cells["Name"];
+                var businessName = row.cells["Company"];
                 if (businessName == venueName) venueName = null;
 
                 businessStore[businessName] = {
