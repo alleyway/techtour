@@ -295,10 +295,10 @@ input[type="color"]:focus,
     height: 36px;
 }
 .leaflet-bar .leaflet-control-zoom-out {
-    background-position: 4px -24px;
+    background-position: 5px -24px;
 }
 .leaflet-bar .leaflet-control-zoom-in {
-    background-position: 4px 4px;
+    background-position: 5px 4px;
 }
 
 .business_detail {
