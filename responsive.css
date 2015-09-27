@@ -100,26 +100,7 @@ html {
     }
 }
 
-@media print {
-    .intro-section {
-        padding-top:0;
-    }
-    .leaflet-control{
-        visibility: hidden;
-    }
-    #map {
-        height: 400px;
-        top:10px;
-        position:relative;
-    }
-    #interaction_container {
-        display: none;
 
-    }
-    a[href]:after {
-        content: none;
-    }
-}
 
 @media (min-width:800px){
     #map {
@@ -169,7 +150,6 @@ html {
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
     }
-
 }
 .leaflet-popup-content {
     padding: 4px;
@@ -392,4 +372,156 @@ input[type="color"]:focus,
 .popup_detail_button {
     display:inline-block;
     width:100px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.5);
+    z-index: 100000;
+    display: none;
+    -webkit-backface-visibility: hidden;
+}
+
+.directions-overlay {
+    position: relative;
+    z-index: 10001;
+    display: none;
+    max-width: 670px;
+    margin: 0 auto;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+}
+
+.directions-view {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    position: absolute;
+    background-color: #fff;
+    min-height: 450px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+
+}
+
+#directions-map {
+    width: 400px;
+    height: 350px;
+
+}
+
+#directions-summary {
+    float:right;
+    width:218px;
+    font-family: ‘Roboto Condense’, Arial, serif;
+    font-size: 13px;
+}
+
+#directions-panel {
+    width: 100%;
+}
+
+#directions-header {
+    width: 100%;
+    padding: 20px;
+    background-color: #eee;
+    border: 1px solid #c0c0c0;
+    margin-top: 14px;
+}
+
+#directions-dropdown {
+    position: absolute;
+    right:0;
+    top:-38px;
+    height: 38px;
+    background-color: rgba(0, 112, 60, 0.65);
+    z-index: 10002;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom-left-radius: 8px;
+    border-left: 1pt solid rgba(0, 0, 0, .3);
+    border-bottom: 1pt solid rgba(0, 0, 0, .3);
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+
+#directions-dropdown:hover {
+    text-decoration: underline;
+}
+
+#print-button {
+    font-size: 16px;
+    cursor: pointer;
+    width: 100px;
+    background-color: #00703c;
+    border-radius: 4px;
+    border: 1px solid gray;
+    text-transform: uppercase;
+    padding: 9px;
+    text-align: center;
+    color: white;
+}
+
+#print-close {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+@media print {
+    .intro-section {
+        padding-top:0;
+    }
+    .leaflet-control{
+        visibility: hidden;
+    }
+    #map {
+        height: 400px;
+        top:10px;
+        position:relative;
+    }
+    #interaction_container {
+        display: none;
+
+    }
+    a[href]:after {
+        content: none;
+    }
+
+    .no-print, .no-print * {
+        display: none !important;
+    }
+
+    .overlay {
+        display: block;
+        height: auto;
+        position: relative;
+    }
+
+    .directions-overlay {
+        display: block;
+        height: auto;
+        position: relative;
+    }
+
+    .directions-view {
+        position: relative;
+        height: auto;
+        overflow: visible;
+    }
+    .gmnoprint, .gmnoscreen, .gm-style-cc {
+        visibility: hidden!important;
+    }
 }

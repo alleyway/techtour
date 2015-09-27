@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description" content="Charlottesville Business Innovation Tech Tour Map">
+    <meta name="author" content="Michael Lake, Alleyway Consulting">
 
     <title>CBIC Tech Tour Map</title>
     <link href="img/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
@@ -35,7 +35,7 @@
     <![endif]-->
 
 
-    <script id="business_template"type="text/x-handlebars-template">
+    <script id="business_template" type="text/x-handlebars-template">
         <!-- TODO: outline in red if no GPS coordinates -->
         <div class="business_entry" name="{{businessName}}">
             <h4>{{businessName}}</h4>
@@ -49,7 +49,7 @@
 
             <div class="body">
                 {{#each stops}}
-                <strong>{{business.businessName}}</strong> -  {{tourTime}},  {{tourGuide}} <br/>{{/each}}
+                <strong>{{business.businessName}}</strong> -  {{tourTime}} <br/>{{/each}}
             </div>
         </div>
     </script>
@@ -83,13 +83,20 @@
             </div>
         </div>
     </script>
+
+    <script id="directions_summary_template" type="text/x-handlebars-template">
+        <strong>A. PVCC</strong><br/><br/>
+            {{#each stops}}
+            <strong>{{markerId}}. {{tourTime}}<br/>{{business.businessName}}</strong><br/>{{business.venueAddress}}<br/><br/>{{/each}}
+        <strong>{{lastMarkerId}}. PVCC</strong>
+    </script>
 </head>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
 <!-- Navigation -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top no-print" role="navigation" >
     <div class="container">
         <div class="navbar-header page-scroll">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
@@ -128,8 +135,12 @@
 
 
 <!-- Intro Section -->
-<section id="intro" class="intro-section">
-    <div id="map"></div>
+<section id="intro" class="intro-section no-print">
+    <div id="map">
+        <div id="directions-dropdown">
+            <span class="glyphicon glyphicon-print"></span>&nbsp; Printable turn-by-turn directions
+        </div>
+    </div>
 
 
     <div id="interaction_container">
@@ -147,7 +158,7 @@
     </div>
 </section>
 
-<section id="sponsors">
+<section id="sponsors" class="no-print">
     <span class="glyphicon glyphicon-globe" style="visibility:hidden;"></span>
     <a href="http://cvilleinnovation.org/events/tech-tour"><img src="img/tech_tour_logo_footer.svg" height="74" /></a>
     <a href="http://cvilleinnovation.com/?utm_source=techtour&utm_medium=website&utm_campaign=techtour"><img src="img/cbic_logo_footer.png" height="74" /></a>
@@ -179,6 +190,22 @@
     <!--</div>-->
 <!--</section>-->
 
+<div class="overlay">
+    <div class="directions-overlay" style="display: block;">
+        <div class="directions-view">
+            <div id="print-button" class="no-print">PRINT</div>
+            <img id="print-close" src="img/btn_close.svg" width="22" class="no-print"/>
+            <div id="directions-header">
+                <img style="margin-left: 20px" src="img/cbic_tech_tour_logo.svg" height="48"/> <img src="img/alleyway_print.png" height="76" style="margin-left: 40px"/>
+            </div>
+            <h2 id="groupname"></h2>
+            <div id="directions-summary"></div>
+            <div id="directions-map"></div>
+            <div id="directions-panel"></div>
+        </div>
+    </div>
+</div>
+
 <!-- jQuery -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -200,6 +227,19 @@
 <!-- Custom javascript -->
 <script src="main.js"></script>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzSXkkdsJn_LKFDtwdQZvRVt3-CkMSVZ4&signed_in=false&callback=initMap"
+        async defer></script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-64992028-2', 'auto');
+    ga('send', 'pageview');
+
+</script>
 </body>
 
 </html>

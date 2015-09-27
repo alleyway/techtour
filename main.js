@@ -36,6 +36,8 @@ var basicPopupTemplate;
 
 var basicTourPopupTemplate;
 
+var directionsSummaryTemplate;
+
 var tourTemplate;
 
 var currentSelected = null;
@@ -53,6 +55,11 @@ var distinctColors = [
     "#607d8b","#37474f","#fdd835","#ff4081"];
 
 var center = [38.032, -78.492];
+
+var directionsDisplay;
+var directionsService;
+var directionsMap;
+
 
 //jQuery to collapse the navbar on scroll
 $(window).scroll(function () {
@@ -151,6 +158,8 @@ function showTourStopMarker(businessObject) {
 }
 
 function showDetailMarker(businessObject) {
+    hideDirectionsDropDown();
+
     //clusterGroupMarkers.clearLayers();
     plainGroupMarkers.clearLayers();
     oms.clearMarkers();
@@ -192,10 +201,108 @@ function showDetailMarker(businessObject) {
     }
 }
 
+function initMap() {
+
+    directionsDisplay = new google.maps.DirectionsRenderer({
+        suppressMarkers: false
+        //markerOptions: {
+        //    icon: {
+        //        size: google.maps.Size(35,90),
+        //        anchor: google.maps.Point(50, 45),
+        //        url:"http://a.tiles.mapbox.com/v4/marker/pin-l-circle+fbb038.png?access_token=pk.eyJ1IjoibWxha2U5MDAiLCJhIjoiSXV0UEF6dyJ9.8ZrYcafYb59U67LHErUegw"
+        //    }
+        //}
+    });
+
+    directionsService = new google.maps.DirectionsService;
+
+    directionsMap = new google.maps.Map(document.getElementById('directions-map'), {
+        zoom: 7,
+        center: {lat: center[0], lng: center[1]},
+        scrollwheel: false,
+        draggable: true,
+        zoomControl: false,
+        mapTypeControl: false,
+        disableDefaultUI: true
+    });
+
+
+    directionsDisplay.setMap(directionsMap);
+    directionsDisplay.setPanel(document.getElementById('directions-panel'));
+
+    //var control = document.getElementById('floating-panel');
+    //control.style.display = 'block';
+    //map.controls[google.maps.ControlPosition.TOP_CENTER].push(control);
+
+    //calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+    var start = "Piedmont Virginia Community College, Charlottesville, VA 22902";
+    var end = "Piedmont Virginia Community College, Charlottesville, VA 22902";
+
+    var waypoints = [];
+
+    var tourObject = tourStore[currentSelected];
+    var directionsSummary = $("#directions-summary");
+    directionsSummary.empty();
+    if (tourObject){
+
+        $("#groupname")[0].innerHTML= tourObject.tourGroupName;
+        tourObject.stops.forEach(function (tourStop) {
+
+            var venueName = tourStop.business.venueName;
+            if (venueName && venueName.length < 2) venueName = tourStop.business.businessName;
+
+            waypoints.push({
+                location: tourStop.business.venueCoordinates[0] + "," + tourStop.business.venueCoordinates[1],
+                stopover: true
+            });
+        });
+
+        //modify the original tour object to include PVCC stops and add marker IDs
+
+        var tourExtended = $.extend({}, tourObject);
+        var markerArray = ["B","C","D","E","F","G","H"];
+        var count = 0;
+        tourExtended.stops.forEach(function (tourStop) {
+            tourStop.markerId = markerArray[count++];
+        });
+
+        tourExtended.lastMarkerId = markerArray[count];
+        directionsSummary.append(directionsSummaryTemplate(tourExtended));
+    }
+
+    directionsService.route({
+        origin: start,
+        destination: end,
+        waypoints: waypoints,
+        provideRouteAlternatives: false,
+        travelMode: google.maps.TravelMode.DRIVING
+    }, function (response, status) {
+        if (status === google.maps.DirectionsStatus.OK) {
+            directionsDisplay.setDirections(response);
+        } else {
+            window.alert('Directions request failed due to ' + status);
+        }
+    });
+    google.maps.event.trigger(directionsMap,'resize');
+}
+
+function loadDirections() {
+    $(".overlay").show();
+    calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+function hideDirectionsDropDown(){
+    $("#directions-dropdown").animate({top: '-38'}, "slow");
+}
+
 function updateDisplay() {
     console.log("updateDisplay();");
     var entryContainer = $('#entry_container');
 
+    hideDirectionsDropDown();
     //reset display
 
     //clusterGroupMarkers.clearLayers();
@@ -297,6 +404,7 @@ function updateDisplay() {
         });
 
     } else {
+
         var bounds = new L.LatLngBounds();
         $.map(tourStore, function (tourObject) {
 
@@ -451,10 +559,20 @@ function updateDisplay() {
                 setTimeout(function(){
                     map.fitBounds(bounds,{
                         maxZoom: 15,
-                        paddingTopLeft:[50, 75],
-                        paddingBottomRight:[50, 50]
+                        paddingTopLeft:[50, 120],
+                        paddingBottomRight:[50, 20]
                     });
+
+
                 }, 120);
+
+                if (!isMobile.any()){
+                    setTimeout(function(){
+                        $("#directions-dropdown").animate({
+                            top:'0'
+                        }, 'slow');
+                    }, 700);
+                }
 
                 //scrolls to top for when we're in mobile
                 $('html, body').stop().animate({
@@ -503,7 +621,6 @@ function fetchTours() {
                     count++;
                     //initialize property if doesn't exist yet
                     tourStore[tourGroupName] = {
-                        "bus": row.cells["Bus"],
                         "tourGroupName": tourGroupName,
                         "color": distinctColors[count],
                         "stops": []
@@ -618,6 +735,7 @@ $(document).ready(function () {
     businessDetailTemplate = Handlebars.compile($('#popup_business_detail_template').html());
     basicPopupTemplate = Handlebars.compile($('#basic_business_popup_template').html());
     basicTourPopupTemplate = Handlebars.compile($('#basic_tour_popup_template').html());
+    directionsSummaryTemplate = Handlebars.compile($('#directions_summary_template').html());
 
     var businessSpreadsheetCallback = function (error, options, response) {
 
@@ -698,6 +816,28 @@ $(document).ready(function () {
         });
     });
 
+    $("#print-button").on('click', function(e){
+        window.print();
+    });
+
+    $(".overlay").on('click', function(e){
+        if(e.target != this) return;
+        $(this).hide();
+    });
+
+    $("#directions-dropdown").on('click', function(e){
+        loadDirections();
+    });
+
+    $("#print-close").on('click', function(e){
+        $(".overlay").hide();
+    });
+
+    $(document).keyup(function(e) {
+        if (e.keyCode == 27) { // escape key maps to keycode `27`
+            $(".overlay").hide();
+        }
+    });
 });
 
 
