@@ -652,7 +652,7 @@ function fetchTours() {
 
     $('#tour_container').sheetrock({
         url: tourSpreadsheet,
-        sql: "select * ORDER BY C",
+        sql: "select * ORDER BY B,C",
         callback: tourSpreadsheetCallback,
         reset: true
     });
