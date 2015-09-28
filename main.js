@@ -622,7 +622,7 @@ function fetchTours() {
                     //initialize property if doesn't exist yet
                     tourStore[tourGroupName] = {
                         "tourGroupName": tourGroupName,
-                        "color": distinctColors[count],
+                        "color": distinctColors[0],
                         "stops": []
                     };
                 }
