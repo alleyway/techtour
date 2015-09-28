@@ -44,6 +44,8 @@ var currentSelected = null;
 
 var hoverTimer = null;
 
+var mapTimer = null;
+
 var lastTapped = null;
 
 var businessTabSelected = true;
@@ -195,15 +197,24 @@ function showDetailMarker(businessObject) {
                 var venueCoordinates = origLink.substring(55);
                 if(isMobile.iOS()){
                     e.preventDefault();
-
                     $('#google_maps_frame').attr('src', "comgooglemapsurl://" + origLink.substring(23));
+
+                    var count = 0;
+                    var myInterval = null;
                     var before = Date.now();
-                    setTimeout(function(){
-                        var after = Date.now();
-                        if ((after - before) < 1500) {
-                            window.location.href = origLink;
+                    myInterval = setInterval(function(){
+                        count++;
+                        console.log('interval');
+
+                        if (count>14){
+                            clearInterval(myInterval);
+                            var after = Date.now();
+                            if ((after - before) < 3000){
+                                window.location.href = origLink;
+                            }
                         }
-                    }, 1000);
+                    }, 100);
+
                 }
             });
 
@@ -848,6 +859,14 @@ $(document).ready(function () {
             $(".overlay").hide();
         }
     });
+
+    if (isMobile.iOS()){
+        window.addEventListener("pagehide", function() {
+            console.log("page hidden");
+            mapTimer = Date.now();
+
+        });
+    }
 });
 
 
