@@ -242,7 +242,10 @@ function initMap() {
         center: {lat: center[0], lng: center[1]},
         scrollwheel: false,
         draggable: true,
-        zoomControl: false,
+        zoomControl: true,
+        zoomControlOptions: {
+            position: google.maps.ControlPosition.LEFT_BOTTOM
+        },
         mapTypeControl: false,
         disableDefaultUI: true
     });
