@@ -89,6 +89,26 @@ html {
     text-align: center;
     background: #fff;
 }
+
+#directions-dropdown {
+    position: absolute;
+    right:0;
+    top:-38px;
+    height: 38px;
+    background-color: rgba(0, 112, 60, 0.65);
+    z-index: 10002;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom-left-radius: 8px;
+    border-left: 1pt solid rgba(0, 0, 0, .3);
+    border-bottom: 1pt solid rgba(0, 0, 0, .3);
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    visibility: hidden;
+}
+
 @media (max-width:1500px){
 
 }
@@ -153,6 +173,10 @@ html {
     .tour_entry:first-child {
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
+    }
+
+    #directions-dropdown {
+        visibility: visible;
     }
 }
 .leaflet-popup-content {
@@ -443,23 +467,7 @@ input[type="color"]:focus,
     margin-top: 14px;
 }
 
-#directions-dropdown {
-    position: absolute;
-    right:0;
-    top:-38px;
-    height: 38px;
-    background-color: rgba(0, 112, 60, 0.65);
-    z-index: 10002;
-    text-align: center;
-    padding: 10px;
-    cursor: pointer;
-    border-bottom-left-radius: 8px;
-    border-left: 1pt solid rgba(0, 0, 0, .3);
-    border-bottom: 1pt solid rgba(0, 0, 0, .3);
-    color: white;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-}
+
 
 #directions-dropdown:hover {
     text-decoration: underline;

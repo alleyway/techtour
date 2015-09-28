@@ -189,12 +189,15 @@ function showDetailMarker(businessObject) {
         setTimeout(function () {
             marker.openPopup();
             //$('.directions_link').on('click', function(e){
+            //
+            //
             //    //using maps.google.com will launch native app
             //    var venueCoordinates = e.currentTarget.href.substring(49,e.currentTarget.href.length);
-            //    //if(isMobile.iOS()){
-            //    //    e.preventDefault();
-            //    //    window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
-            //    //}
+            //    if(isMobile.iOS()){
+            //        e.preventDefault();
+            //        window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
+            //
+            //    }
             //});
 
         }, 600);
