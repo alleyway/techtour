@@ -195,13 +195,15 @@ function showDetailMarker(businessObject) {
                 var venueCoordinates = origLink.substring(55);
                 if(isMobile.iOS()){
                     e.preventDefault();
-                    window.location.href = "comgooglemapsurl://" + origLink.substring(23);
 
+                    $('#google_maps_frame').attr('src', "comgooglemapsurl://" + origLink.substring(23));
+                    var before = Date.now();
                     setTimeout(function(){
-                        window.location.href = origLink;
-                    }, 600);
-
-                    //window.location.href = "http://maps.apple.com/maps?saddr=Current%20Location&daddr=" + venueCoordinates;
+                        var after = Date.now();
+                        if ((after - before) < 1500) {
+                            window.location.href = origLink;
+                        }
+                    }, 1000);
                 }
             });
 
