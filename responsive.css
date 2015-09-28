@@ -403,6 +403,10 @@ input[type="color"]:focus,
     display:inline-block;
     width:100px;
 }
+a.popup_detail_button:active {
+    background-color: rgba(251, 176, 56, 0.21);
+}
+
 
 .overlay {
     position: fixed;
