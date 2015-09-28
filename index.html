@@ -56,11 +56,11 @@
 
     <script id="popup_business_detail_template" type="text/x-handlebars-template">
         <div class="business_detail">
-            <span class="business_title">{{businessName}}</span><br />
-            <div style="padding-bottom: 6px; padding-top:6px; margin: 4px auto;">
-                <span style="font-size: smaller"><span style="color:#333;">Venue Address:</span><br/><strong>
+            <span class="business_title">{{businessName}}</span>
+            <div style="margin: 2px auto;">
+                <div style="font-size: smaller; padding-bottom:8px;"><span style="color:#333;">Venue Address:</span><br/><strong>
                 {{#if venueName}}{{venueName}}<br/>{{/if}}
-                {{#if venueAddress}}{{venueAddress}}<br/>{{/if}}</strong></span><br/>
+                {{#if venueAddress}}{{venueAddress}}<br/>{{/if}}</strong></div>
                 <nobr>{{#if businessWebsite}}<a href="{{businessWebsite}}" class="popup_detail_button" target="_blank"><span class="glyphicon glyphicon-globe"></span> Website</a> &nbsp;{{/if}}  <a class="directions_link" class="popup_detail_button"  href="http://maps.google.com/?saddr=Current%20Location&daddr={{venueCoordinates.[0]}},{{venueCoordinates.[1]}}" target="_blank"><span class="glyphicon glyphicon-new-window"></span> Directions</a></nobr>
             </div>
         </div>
