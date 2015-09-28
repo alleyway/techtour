@@ -181,7 +181,7 @@ html {
 
 .business_entry_active, .business_entry_active:hover {
     background-color: #f9f9f9;
-    border-left: 8px solid #767676;
+    border-left: 8px solid #fbb038;
 }
 
 .tour_entry {
@@ -193,6 +193,7 @@ html {
     padding-top: 5px;
     padding-bottom: 5px;
     cursor: pointer;
+    border-left-color: #767676;
     border-bottom: 1px solid #ccc;
     border-right: 1px solid #e2e2e2;
     border-left-style: solid;
@@ -206,6 +207,7 @@ html {
 .tour_entry_active, .tour_entry_active:hover {
     background-color: #f9f9f9;
     border-left-width: 8px;
+    border-left-color: #fbb038;
 }
 
 .about-section {
