@@ -206,7 +206,7 @@ function showDetailMarker(businessObject) {
                         count++;
                         console.log('interval');
 
-                        if (count>14){
+                        if (count>15){
                             clearInterval(myInterval);
                             var after = Date.now();
                             if ((after - before) < 3000){
