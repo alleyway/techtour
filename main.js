@@ -197,7 +197,7 @@ function showDetailMarker(businessObject) {
                 var venueCoordinates = origLink.substring(55);
                 if(isMobile.iOS()){
                     e.preventDefault();
-                    $('#google_maps_frame').attr('src', "comgooglemapsurl://" + origLink.substring(23));
+                    window.location = "comgooglemapsurl://" + origLink.substring(23);
 
                     var count = 0;
                     var myInterval = null;
