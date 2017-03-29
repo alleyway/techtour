@@ -1,6 +1,6 @@
 CBIC Tech Tour 
 
-[http://techtour.alleywayconsulting.com/](http://techtour.alleywayconsulting.com/)
+[http://techtour.cvilleinnovation.org](http://techtour.cvilleinnovation.org/)
 
 Installing JavaScript Libraries (only use when updating libraries)
 
