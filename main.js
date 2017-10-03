@@ -778,7 +778,7 @@ $(document).ready(function () {
                 }
 
                 if (!row.cells["TourGPS"]) {
-                    alert("Missing GPS coordinate for " + row.cells["Company"]);
+                    alert("Missing GPS coordinate for " + row.cells["Company"] + " look up with /add_gps.html");
                 }
 
 
