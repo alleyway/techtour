@@ -1,2 +1,18 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea/
+.DS_Store
+_site/CNAME
+_site/README.md
+_site/add.html
+_site/add_gps.html
+_site/add_gps.js
+_site/bower.json
+_site/business.json
+_site/img/
+_site/index.html
+_site/main.js
+_site/responsive.css
+_site/scratch.txt
+_site/tour_group.json
+img/.DS_Store
+_site/bower_components/

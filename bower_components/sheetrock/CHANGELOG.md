@@ -1,5 +1,41 @@
 ## Change Log
 
+### v1.1.4
+
+* Allow default callback to be overridden. (#113).
+
+
+### v1.1.3
+
+* Don't catch errors thrown in user template (#111).
+
+
+### v1.1.2
+
+* Fix by @papoms for requests that fail after use of reset option (#104).
+
+
+### v1.1.1
+
+* Fix error when parsing null cell values (fixes #101).
+* Better error handling of invalid URLs.
+
+
+### v1.1.0
+
+* Rewritten in ES2015.
+* Changes to API:
+  - removed non-authoritative `.environment`
+* Standard UMD provided by Webpack.
+
+
+### v1.0.1
+
+* Webpack support.
+* Use formatted numbers (percentages, x decimal places) when available. (@niceandserious)
+* Smaller minified dist version.
+
+
 ### v1.0.0
 
 * No longer depends on jQuery

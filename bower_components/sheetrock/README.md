@@ -1,6 +1,11 @@
 # Sheetrock
 
-[![Build Status][build-status]][travis-ci]
+[![Build status][build-status]][travis-ci]
+[![Test coverage][test-coverage]][code-climate-coverage]
+[![Code climate][code-climate-gpa]][code-climate-code]
+[![NPM version][npm-version]][fury-io]
+
+[![SauceLabs status][saucelabs-status]][saucelabs]
 
 Sheetrock is a JavaScript library for querying, retrieving, and displaying data
 from Google Sheets. In other words, use a Google spreadsheet as your database!
@@ -29,7 +34,7 @@ Grab the [latest version of Sheetrock][latest] for your project. Here’s an
 example request (using jQuery):
 
 ```html
-<table id="#my-table"></table>
+<table id="my-table"></table>
 <script src="jquery.min.js"></script>
 <script src="sheetrock.min.js"></script>
 ```
@@ -96,7 +101,8 @@ about the format and availability.
 * **One header row.** Sheetrock expects a single header row of column labels in
   the first row of the Sheet. Any other configuration (e.g., no header row,
   multiple or offset header rows) can cause problems with the request and
-  complicates templating.
+  complicates templating. The header row values are used as keys in the cell
+  object unless you override them using the `labels` option.
 
 * **Plain text.** Sheetrock doesn’t handle formatted text. Any formatting
   you’ve applied to your data—including hyperlinks—probably won’t show up.
@@ -282,6 +288,14 @@ came up with the name. Sheetrock is released under the [MIT license][license].
 
 [build-status]: https://travis-ci.org/chriszarate/sheetrock.svg?branch=master
 [travis-ci]: https://travis-ci.org/chriszarate/sheetrock
+[test-coverage]: https://codeclimate.com/github/chriszarate/sheetrock/badges/coverage.svg
+[code-climate-coverage]: https://codeclimate.com/github/chriszarate/sheetrock/coverage
+[code-climate-gpa]: https://codeclimate.com/github/chriszarate/sheetrock/badges/gpa.svg
+[code-climate-code]: https://codeclimate.com/github/chriszarate/sheetrock/code
+[npm-version]: https://badge.fury.io/js/sheetrock.svg
+[fury-io]: https://badge.fury.io/js/sheetrock
+[saucelabs-status]: https://saucelabs.com/browser-matrix/sheetrock.svg
+[saucelabs]: https://saucelabs.com/u/sheetrock
 [public]: https://support.google.com/drive/bin/answer.py?hl=en&answer=2494822
 [query]: https://developers.google.com/chart/interactive/docs/querylanguage
 [underscore]: http://underscorejs.org

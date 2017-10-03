@@ -626,8 +626,9 @@ function fetchTours() {
     var tourSpreadsheetCallback = function (error, options, response) {
 
         if (error) {
-            console.log(error);
-            if(!alert('Network connectivity error. Press OK to refresh.')){window.location.reload();}
+            alert(error.message + " - see console log for details");
+            console.log(error  + " - possible issue with spreadsheet found at " + tourSpreadsheet);
+
         } else {
 
             var count = -1;
@@ -764,11 +765,22 @@ $(document).ready(function () {
     var businessSpreadsheetCallback = function (error, options, response) {
 
         if (error) {
-            if(!alert('Network connectivity error. Press OK to refresh.')){window.location.reload();}
-            console.log(error);
+            alert(error.message + " - see console log for details");
+            console.log(error  + " - possible issue with spreadsheet found at " + businessSpreadsheet);
         } else {
 
             response.rows.forEach(function (row) {
+
+                // Quick validation and hint to workaround bug
+
+                if (!row.cells["Company"]) {
+                    alert("Error parsing main spreadhseet - enter '0' for '# of tours' in row 2 as workaround for bug");
+                }
+
+                if (!row.cells["TourGPS"]) {
+                    alert("Missing GPS coordinate for " + row.cells["Company"]);
+                }
+
 
                 //save as structured data
 
@@ -809,7 +821,7 @@ $(document).ready(function () {
 
     $('#business_container').sheetrock({
         url: businessSpreadsheet,
-        sql: "select * where D contains 'YES' order by A",
+        sql: "select * where lower(B) contains 'yes' order by A",
         callback: businessSpreadsheetCallback,
         reset: true
     });

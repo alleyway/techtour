@@ -1,6 +1,6 @@
 {
   "name": "sheetrock",
-  "version": "1.0.0",
+  "version": "1.1.4",
   "description": "Quickly connect to, query, and lazy-load data from Google Spreadsheets.",
   "keywords": [
     "ecosystem:jquery",
@@ -12,21 +12,21 @@
     "ajax",
     "nodb"
   ],
-  "main": "./src/sheetrock.js",
+  "main": "./dist/sheetrock.min.js",
   "dependencies": {},
   "license": "MIT",
-  "homepage": "http://chriszarate.github.io/sheetrock/",
+  "homepage": "https://chriszarate.github.io/sheetrock/",
   "repository": {
     "type": "git",
     "url": "git://github.com/chriszarate/sheetrock.git"
   },
-  "_release": "1.0.0",
+  "_release": "1.1.4",
   "_resolution": {
     "type": "version",
-    "tag": "1.0.0",
-    "commit": "6cbfe083f10a5ed40bbfe513b9ba44f33b42b404"
+    "tag": "1.1.4",
+    "commit": "5a224e2043a511afe65b0cc30a1dc50115e5bc28"
   },
   "_source": "git@github.com:chriszarate/sheetrock.git",
-  "_target": "1.0.0",
+  "_target": "1.1.4",
   "_originalSource": "git@github.com:chriszarate/sheetrock.git"
 }
