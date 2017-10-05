@@ -433,14 +433,14 @@ function updateDisplay() {
         $.map(tourStore, function (tourObject) {
 
             if (searchValue.length > 0) {
-                var found = false;
+                var found =false;
                 if (tourObject.tourGroupName.toLowerCase().indexOf(searchValue) > -1) {
                     found = true;
                 }
                 tourObject.stops.forEach(function (tourStop) {
-                    if (tourStop.tourGuide.toLowerCase().indexOf(searchValue) > -1) {
-                        found = true;
-                    }
+                    // if (tourStop.tourGuide.toLowerCase().indexOf(searchValue) > -1) {
+                    //     found = true;
+                    // }
                     if (tourStop.business && tourStop.business.businessName.toLowerCase().indexOf(searchValue) > -1) {
                         found = true;
                     }
